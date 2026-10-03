@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SocialMatch</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<aside id="panel">
+  <h1>SocialMatch</h1>
+  <p class="sub">Pick how you feel and how social you want to be.</p>
+
+  <section>
+    <h2>Your mood</h2>
+    <div id="moods" class="chips"></div>
+  </section>
+
+  <section>
+    <h2>Social level</h2>
+    <div id="levels" class="levels"></div>
+  </section>
+
+  <section>
+    <h2>Filters</h2>
+    <label>Activity type <select id="fCategory"><option value="">All</option></select></label>
+    <label>Max noise: <b id="vNoise">5</b><input id="fNoise" type="range" min="1" max="5" value="5"></label>
+    <label>Max crowd: <b id="vCrowd">5</b><input id="fCrowd" type="range" min="1" max="5" value="5"></label>
+    <label class="check"><input id="fEvents" type="checkbox" checked> Show events</label>
+  </section>
+
+  <section>
+    <h2>Best matches</h2>
+    <ol id="results"></ol>
+    <h2 id="evHead">Upcoming events</h2>
+    <ul id="events"></ul>
+  </section>
+  <p id="status" role="status"></p>
+</aside>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/algorithms.js"></script>
+<script src="js/db.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
