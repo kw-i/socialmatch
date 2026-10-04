@@ -40,6 +40,14 @@ async function showRoute(lat, lng, name) {
     render(); // refresh distances in the list
   } catch (err) {
     status.textContent = err.message;
+    if (userPos) { // routing failed but we know where the user is: keep the Google Maps link usable
+      document.getElementById('rName').textContent = name;
+      document.getElementById('rSum').textContent = 'Route preview unavailable right now.';
+      document.getElementById('rSteps').innerHTML = '';
+      document.getElementById('rGoogle').href =
+        `https://www.google.com/maps/dir/?api=1&origin=${userPos[0]},${userPos[1]}&destination=${lat},${lng}`;
+      document.getElementById('route').hidden = false;
+    }
   }
 }
 
@@ -48,3 +56,9 @@ function clearRoute() {
   routeLine = null;
   document.getElementById('route').hidden = true;
 }
+
+// Leaflet stops click events from leaving a popup, so attach the handler when the popup opens.
+map.on('popupopen', e => {
+  const b = e.popup.getElement()?.querySelector('.dirbtn');
+  if (b) b.onclick = () => showRoute(+b.dataset.lat, +b.dataset.lng, b.dataset.name);
+});

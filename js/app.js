@@ -67,10 +67,6 @@ function buildControls() {
   };
   $('results').onclick = $('events').onclick = focusItem;
   $('rClear').onclick = clearRoute;
-  document.addEventListener('click', e => {
-    const b = e.target.closest('.dirbtn');
-    if (b) showRoute(+b.dataset.lat, +b.dataset.lng, b.dataset.name);
-  });
 }
 
 (async function init() {
