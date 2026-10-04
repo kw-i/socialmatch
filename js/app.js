@@ -75,6 +75,6 @@ function buildControls() {
     buildControls(); render();
   } catch (err) {
     console.error(err);
-    $('status').textContent = 'Could not load data. Check js/config.js and that schema.sql has been run.';
+    $('status').textContent = 'Could not load data: ' + (err.message || JSON.stringify(err));
   }
 })();
