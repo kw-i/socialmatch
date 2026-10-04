@@ -60,10 +60,9 @@ function topK(items, k) {
   return out.reverse();
 }
 
-// Filtering with a Set for O(1) category lookup
+// Filtering with Sets (O(1) lookups). An empty Set means "no restriction".
 function filterPlaces(places, f) {
-  const cats = f.category ? new Set([f.category]) : null;
   return places.filter(p =>
-    (!cats || cats.has(p.category)) &&
-    p.noise_level <= f.maxNoise && p.crowd_level <= f.maxCrowd);
+    (!f.cats.size || f.cats.has(p.category)) &&
+    (!f.levels.size || f.levels.has(p.social_level)));
 }

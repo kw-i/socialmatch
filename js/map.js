@@ -8,12 +8,17 @@ function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+function dirButton(lat, lng, name) {
+  return `<br><button class="dirbtn" data-lat="${lat}" data-lng="${lng}" data-name="${esc(name)}">Get directions</button>`;
+}
+
 function addPlaceMarker(p, score) {
   const lv = LEVELS[p.social_level];
   const m = L.circleMarker([p.lat, p.lng], {
-    radius: 8 + score / 20, color: '#fff', weight: 2, fillColor: lv.color, fillOpacity: .9
+    radius: 8 + (score ?? 50) / 20, color: '#fff', weight: 2, fillColor: lv.color, fillOpacity: .9
   }).bindPopup(`<b>${esc(p.name)}</b><br>${esc(p.category)} · ${lv.label}<br>
-    Noise ${p.noise_level}/5 · Crowd ${p.crowd_level}/5<br>Match: <b>${score}%</b><br>${esc(p.description)}`);
+    Noise ${p.noise_level}/5 · Crowd ${p.crowd_level}/5<br>
+    ${score == null ? '' : `Match: <b>${score}%</b><br>`}${esc(p.description)}${dirButton(p.lat, p.lng, p.name)}`);
   m.addTo(layer);
   return m;
 }
@@ -22,7 +27,7 @@ function addEventMarker(ev) {
   const icon = L.divIcon({ className: '', html: '<div class="evmark">★</div>', iconSize: [22, 22] });
   const m = L.marker([ev.lat, ev.lng], { icon }).bindPopup(
     `<b>${esc(ev.title)}</b><br>${new Date(ev.event_date).toLocaleString()}<br>
-     ${esc(ev.category)} · ${LEVELS[ev.social_level].label}<br>${esc(ev.description)}`);
+     ${esc(ev.category)} · ${LEVELS[ev.social_level].label}<br>${esc(ev.description)}${dirButton(ev.lat, ev.lng, ev.title)}`);
   m.addTo(layer);
   return m;
 }
