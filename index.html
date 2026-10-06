@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,6 +16,8 @@
   <h1>SocialMatch</h1>
   <p class="sub">Pick your moods, then narrow the map by color and activity.</p>
 
+  <nav id="tabs"><button data-t="explore" aria-pressed="true">Explore</button><button data-t="friends" aria-pressed="false">Friends</button><button data-t="profile" aria-pressed="false">Profile</button></nav>
+  <div id="tab-explore">
   <section>
     <h2>Your moods <small>(pick any)</small></h2>
     <div id="moods" class="chips"></div>
@@ -45,17 +49,29 @@
     <h2 id="evHead">Upcoming events</h2>
     <ul id="events"></ul>
   </section>
+  </div>
+  <div id="tab-friends" hidden></div>
+  <div id="tab-profile" hidden></div>
   <p id="status" role="status"></p>
 </aside>
 <div id="map"></div>
+<dialog id="revDlg">
+  <h2 id="revTitle"></h2><p id="revAvg"></p><ul id="revList"></ul>
+  <label>Your rating <select id="revRating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+  <textarea id="revText" rows="3" maxlength="280" placeholder="Share your experience (stays inside SocialMatch)"></textarea>
+  <button id="revPost" class="dirbtn">Post review</button> <button id="revClose" class="link">Close</button>
+</dialog>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
 <script src="js/algorithms.js"></script>
 <script src="js/db.js"></script>
 <script src="js/map.js"></script>
 <script src="js/directions.js"></script>
+<script src="js/dummy.js"></script>
+<script src="js/social.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

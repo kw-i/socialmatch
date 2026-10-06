@@ -4,7 +4,7 @@ const markers = new Map();
 
 function toggle(set, v) { set.has(v) ? set.delete(v) : set.add(v); }
 
-function render() {
+function render(popups) {
   layer.clearLayers(); markers.clear();
   const prefs = state.moods.filter(m => state.moodIds.has(m.id))
     .map(m => ({ noise: m.pref_noise, crowd: m.pref_crowd, social: m.pref_social }));
@@ -33,6 +33,7 @@ function render() {
     `<li data-k="e${e.id}" data-lat="${e.lat}" data-lng="${e.lng}">${esc(e.title)}
      <span class="meta">${new Date(e.event_date).toLocaleDateString()} · ${LEVELS[e.social_level].label}</span></li>`).join('')
     || '<li class="empty">No events match these colors.</li>';
+  if (popups === true) showNearbyPopups(shown);
 }
 
 function focusItem(e) {
@@ -53,17 +54,17 @@ function buildControls() {
     const b = e.target.closest('button'); if (!b) return;
     toggle(set, num ? +b.dataset.v : b.dataset.v);
     b.setAttribute('aria-pressed', set.has(num ? +b.dataset.v : b.dataset.v));
-    render();
+    render(true);
   });
   wire('moods', state.moodIds, true);
   wire('levels', state.levels, true);
   wire('cats', state.cats, false);
 
-  $('fEvents').onchange = render;
+  $('fEvents').onchange = () => render(true);
   $('reset').onclick = () => {
     [state.moodIds, state.levels, state.cats].forEach(s => s.clear());
     document.querySelectorAll('#moods button,#levels button,#cats button').forEach(b => b.setAttribute('aria-pressed', 'false'));
-    render();
+    render(true);
   };
   $('results').onclick = $('events').onclick = focusItem;
   $('rClear').onclick = clearRoute;
@@ -72,7 +73,8 @@ function buildControls() {
 (async function init() {
   try {
     Object.assign(state, await loadAll());
-    buildControls(); render();
+    await loadReviews();
+    buildControls(); render(); initSocial();
   } catch (err) {
     console.error(err);
     $('status').textContent = 'Could not load data: ' + (err.message || JSON.stringify(err));

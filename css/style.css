@@ -37,3 +37,15 @@ h2 small{font-weight:400;color:var(--mut)}
 #rSteps{margin-top:8px;font-size:.85rem;max-height:180px;overflow-y:auto}
 #rSteps li{padding:4px 0;border-bottom:1px solid var(--line)}
 .dirbtn{font:inherit;margin-top:6px;padding:4px 10px;border:0;border-radius:6px;background:#1d6f8c;color:#fff;cursor:pointer}
+#tabs{display:flex;gap:6px;margin:14px 0 0}
+#tabs button{flex:1;font:inherit;color:inherit;background:none;border:1px solid var(--line);border-radius:8px;padding:6px;cursor:pointer}
+.card{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.card>div{flex:1}
+.avatar{flex:none;width:36px;height:36px;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-weight:700;font-size:.85rem;vertical-align:middle}
+#tab-profile label{display:block;margin:10px 0}
+#tab-profile input[type=text],#tab-profile input:not([type]),#tab-profile textarea,#revDlg textarea{width:100%;font:inherit;padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+dialog{max-width:420px;width:90%;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+#revList{max-height:200px;overflow-y:auto;margin:8px 0}
+#revList li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+#revList .meta{display:inline;margin-left:8px}
