@@ -38,7 +38,7 @@ function ratingLine(p) {
   return s ? `<br>★ ${s.avg.toFixed(1)} (${s.n} review${s.n > 1 ? 's' : ''})` : '';
 }
 
-// After a filter change, open small popups on visible markers within 2 km (your location, else map center).
+// After a filter change, open the details popup on visible markers within 2 km (your location, else map center), nearest 6.
 let nearPopups = [];
 function showNearbyPopups(items) {
   nearPopups.forEach(p => map.removeLayer(p)); nearPopups = [];
@@ -46,8 +46,9 @@ function showNearbyPopups(items) {
   items.map(p => ({ p, d: haversine(ref[0], ref[1], p.lat, p.lng) }))
     .filter(x => x.d <= 2).sort((a, b) => a.d - b.d).slice(0, 6).forEach(({ p }) => {
       const m = markers.get('p' + p.id);
-      if (!m || layer.getVisibleParent(m) !== m) return; // skip markers hidden inside a cluster
-      nearPopups.push(L.popup({ autoClose: false, closeOnClick: false, closeButton: false, offset: [0, -6] })
-        .setLatLng([p.lat, p.lng]).setContent(`<b>${esc(p.name)}</b>${p.score == null ? '' : ' · ' + p.score + '%'}`).addTo(map));
+      if (!m) return;
+      // Full place-details popup (same content as clicking the marker)
+      nearPopups.push(L.popup({ autoClose: false, closeOnClick: false, offset: [0, -6], maxWidth: 220 })
+        .setLatLng([p.lat, p.lng]).setContent(m.getPopup().getContent()).addTo(map));
     });
 }
