@@ -49,3 +49,23 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 #revList{max-height:200px;overflow-y:auto;margin:8px 0}
 #revList li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.9rem}
 #revList .meta{display:inline;margin-left:8px}
+
+/* ---- About tab ---- */
+#tabs button{font-size:.85rem;padding:6px 4px}
+.about-hero{margin-top:14px;padding:14px;border-radius:10px;border:1px solid var(--line);border-left:6px solid var(--accent)}
+.about-hero h2{margin:0 0 6px;font-size:1.1rem}
+.about-hero p{margin:0;color:var(--mut);font-size:.9rem}
+.steps li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.steps b{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:.8rem}
+.weights div{display:grid;grid-template-columns:90px 1fr 36px;gap:8px;align-items:center;margin:6px 0;font-size:.85rem}
+.weights i{display:block;height:8px;border-radius:4px;background:var(--accent)}
+.weights b{text-align:right}
+.legend-list{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.legend{display:flex;align-items:center;gap:8px;font-size:.85rem}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+
+/* ---- Pin a spot ---- */
+.spotpin{font-size:28px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
+#spotInfo{margin-top:8px}
+#spotInfo label{display:inline-flex;align-items:center;gap:6px;margin:0 12px 0 0}
+#spotInfo select{width:auto;margin:0}

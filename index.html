@@ -3,75 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SocialMatch</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<title>SocialMatch · Places that fit your social energy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2a10 10 0 0 0-10 10c0 7 10 18 10 18s10-11 10-18A10 10 0 0 0 16 2z' fill='%235bd6c9'/%3E%3Ccircle cx='13' cy='12' r='4' fill='none' stroke='%230b1622' stroke-width='2'/%3E%3Ccircle cx='19' cy='12' r='4' fill='none' stroke='%230b1622' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-<link rel="stylesheet" href="css/style.css?v=3">
+<style>
+:root{--bg:
+#0b1622;--panel:
+#12263a;--line:
+#23405a;--ink:
+#e7f0f7;--mut:
+#8fa7ba;--accent:
+#5bd6c9;
+--l1:
+#4f86f0;--l2:
+#2fb98c;--l3:
+#f0b429;--l4:
+#ee5a73}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;position:relative;font-family:'Familjen Grotesk',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;position:relative}
+
+/* Ring background: same design repeated down the whole page */
+.bgs{position:absolute;inset:0;overflow:hidden;pointer-events:none;color:var(--line)}
+.bgs svg{display:block;width:100%;height:760px;fill:none;stroke:currentColor;stroke-width:1}
+.bgs svg.f{transform:scaleY(-1)}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;position:relative}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.brand svg{width:43px;height:43px}
+.btn{display:inline-block;font:inherit;font-weight:600;text-decoration:none;padding:12px 24px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent);cursor:pointer}
+.btn.primary{background:var(--accent);color:
+#06141f}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding:56px 0 80px;position:relative}
+.hero h1{font-size:clamp(2.4rem,6.4vw,4.2rem);line-height:1;letter-spacing:-.035em;margin:0 0 18px}
+.hero p{color:var(--mut);font-size:1.12rem;margin:0 0 28px;max-width:44ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.map{position:relative;aspect-ratio:1/1.05;border-radius:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.map svg.bgm{position:absolute;inset:0;width:100%;height:100%;color:var(--line)}
+.pin{position:absolute;width:22px;height:22px;border-radius:50%;border:3px solid var(--bg);transform:translate(-50%,-50%)}
+.pin::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid currentColor;opacity:.35}
+.match{position:absolute;left:8%;right:8%;bottom:7%;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.match .row{display:flex;justify-content:space-between;align-items:center;font-size:.92rem;padding:3px 0}
+.match .row b{color:var(--accent)}
+.bar{height:6px;border-radius:3px;background:var(--line);margin:6px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+section{padding:64px 0;position:relative}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;margin:0 0 10px}
+.lead{color:var(--mut);margin:0 0 32px;max-width:52ch}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.step{padding:24px;background:var(--panel)}
+.step+.step{border-left:1px solid var(--line)}
+.step .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:
+#06141f;font-weight:700;margin-bottom:12px}
+.step h3{margin:0 0 4px;font-size:1.1rem}
+.step p{margin:0;color:var(--mut);font-size:.95rem}
+
+/* Color boxes */
+.spec{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.lv{position:relative;padding:20px 18px 18px;border-radius:16px;
+  background:color-mix(in srgb,var(--c) 10%,var(--panel));
+  border:1px solid color-mix(in srgb,var(--c) 50%,var(--line))}
+.lv .dot{display:block;width:34px;height:34px;border-radius:50%;background:var(--c);
+  border:3px solid var(--bg);margin-bottom:16px;
+  box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 25%,transparent)}
+.lv h3{margin:0 0 4px;font-size:1.08rem}
+.lv p{margin:0 0 14px;color:var(--mut);font-size:.9rem;min-height:2.7em}
+.meter{display:flex;gap:4px;margin-bottom:8px}
+.meter i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.meter i.on{background:var(--c)}
+.lv small{color:var(--mut);font-size:.82rem}
+@media(prefers-reduced-motion:no-preference){.lv{transition:transform .2s}.lv:hover{transform:translateY(-4px)}}
+
+.final{text-align:center;padding:72px 0 80px}
+.final .lead{margin:0 auto 26px}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:.88rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(prefers-reduced-motion:no-preference){.pin::after{animation:p 2.6s ease-out infinite}@keyframes p{0%{transform:scale(.6);opacity:.6}100%{transform:scale(1.5);opacity:0}}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}}
+</style>
 </head>
 <body>
-<aside id="panel">
-  <h1>SocialMatch</h1>
-  <p class="sub">Pick your moods, then narrow the map by color and activity.</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32">
+    <path d="M16 2a10 10 0 0 0-10 10c0 7 10 18 10 18s10-11 10-18A10 10 0 0 0 16 2z" fill="
+#5bd6c9"/>
+    <circle cx="13" cy="12" r="4" fill="none" stroke="
+#0b1622" stroke-width="2"/>
+    <circle cx="19" cy="12" r="4" fill="none" stroke="
+#0b1622" stroke-width="2"/>
+  </symbol>
+  <defs>
+    <g id="rings" opacity=".55">
+      <ellipse cx="900" cy="260" rx="120" ry="80" transform="rotate(-18 900 260)"/>
+      <ellipse cx="900" cy="260" rx="200" ry="140" transform="rotate(-18 900 260)"/>
+      <ellipse cx="900" cy="260" rx="290" ry="210" transform="rotate(-18 900 260)"/>
+      <ellipse cx="900" cy="260" rx="390" ry="290" transform="rotate(-18 900 260)"/>
+      <ellipse cx="900" cy="260" rx="500" ry="380" transform="rotate(-18 900 260)"/>
+      <ellipse cx="900" cy="260" rx="620" ry="470" transform="rotate(-18 900 260)"/>
+      <ellipse cx="160" cy="620" rx="90" ry="60" transform="rotate(14 160 620)"/>
+      <ellipse cx="160" cy="620" rx="190" ry="120" transform="rotate(14 160 620)"/>
+      <ellipse cx="160" cy="620" rx="300" ry="190" transform="rotate(14 160 620)"/>
+    </g>
+  </defs>
+</svg>
 
-  <nav id="tabs"><button data-t="explore" aria-pressed="true">Explore</button><button data-t="friends" aria-pressed="false">Friends</button><button data-t="profile" aria-pressed="false">Profile</button></nav>
-  <div id="tab-explore">
-  <section>
-    <h2>Your moods <small>(pick any)</small></h2>
-    <div id="moods" class="chips"></div>
+<div class="bgs" aria-hidden="true">
+  <svg viewBox="0 0 1200 760" preserveAspectRatio="xMidYMin slice"><use href="#rings"/></svg>
+  <svg class="f" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMin slice"><use href="#rings"/></svg>
+  <svg viewBox="0 0 1200 760" preserveAspectRatio="xMidYMin slice"><use href="#rings"/></svg>
+  <svg class="f" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMin slice"><use href="#rings"/></svg>
+  <svg viewBox="0 0 1200 760" preserveAspectRatio="xMidYMin slice"><use href="#rings"/></svg>
+  <svg class="f" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMin slice"><use href="#rings"/></svg>
+</div>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="index.html" aria-label="SocialMatch home"><svg><use href="#logo"/></svg>SocialMatch</a>
+    <a class="btn" href="app.html">Check the map now :> </a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <h1>Go where your social energy fits.</h1>
+      <p>Feeling quiet, curious or ready to meet people? Pick a mood and SocialMatch ranks nearby places and events by noise, crowd and how much people interact.</p>
+      <div class="cta">
+        <a class="btn primary" href="app.html">Open the map</a>
+        <a class="btn" href="#how">How it works</a>
+      </div>
+    </div>
+    <div class="map" role="img" aria-label="Sample map with colored pins and a match score card">
+      <svg class="bgm" viewBox="0 0 400 420" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M-10 90 C90 60 160 150 260 110 S380 80 420 120"/>
+        <path d="M-10 250 C80 230 150 300 230 270 S360 230 420 280"/>
+        <path d="M110 -10 C130 80 90 160 140 240 S150 360 130 430"/>
+        <path d="M300 -10 C280 70 330 150 300 230 S320 350 340 430"/>
+      </svg>
+      <span class="pin" style="left:22%;top:20%;background:var(--l1);color:var(--l1)"></span>
+      <span class="pin" style="left:60%;top:16%;background:var(--l2);color:var(--l2)"></span>
+      <span class="pin" style="left:78%;top:38%;background:var(--l3);color:var(--l3)"></span>
+      <span class="pin" style="left:34%;top:44%;background:var(--l4);color:var(--l4)"></span>
+      <span class="pin" style="left:68%;top:56%;background:var(--l2);color:var(--l2)"></span>
+      <div class="match">
+        <div class="row"><span>Mood: Chill</span><b>Best match 96%</b></div>
+        <div class="bar"><i style="width:96%"></i></div>
+        <div class="row"><span>Quiet park</span><span>Low interaction</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section id="how">
+    <h2>From mood to destination in three steps</h2>
+    <p class="lead">No sign-up needed to start exploring.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Pick your moods</h3><p>Choose how you feel, from relaxed to party. Pick more than one.</p></div>
+      <div class="step"><div class="n">2</div><h3>See your matches</h3><p>Each place gets a score from 0 to 100 for how well it fits.</p></div>
+      <div class="step"><div class="n">3</div><h3>Go there</h3><p>Read reviews, check events and get directions from the map.</p></div>
+    </div>
   </section>
 
   <section>
-    <h2>Colors to show <small>(none selected = all)</small></h2>
-    <div id="levels" class="levels"></div>
+    <h2>Read the map by color</h2>
+    <p class="lead">Every pin shows how much people interact at that place.</p>
+    <div class="spec">
+      <div class="lv" style="--c:var(--l1)">
+        <span class="dot"></span><h3>Solo</h3>
+        <p>Quiet spots for reading or thinking.</p>
+        <span class="meter" aria-label="Interaction level 1 of 4"><i class="on"></i><i></i><i></i><i></i></span>
+        <small>Gardens, viewpoints</small>
+      </div>
+      <div class="lv" style="--c:var(--l2)">
+        <span class="dot"></span><h3>Low interaction</h3>
+        <p>Calm places with people nearby.</p>
+        <span class="meter" aria-label="Interaction level 2 of 4"><i class="on"></i><i class="on"></i><i></i><i></i></span>
+        <small>Plazas, landmarks</small>
+      </div>
+      <div class="lv" style="--c:var(--l3)">
+        <span class="dot"></span><h3>Casual social</h3>
+        <p>Easy to start a chat.</p>
+        <span class="meter" aria-label="Interaction level 3 of 4"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>
+        <small>Cafés, malls, parks</small>
+      </div>
+      <div class="lv" style="--c:var(--l4)">
+        <span class="dot"></span><h3>Highly interactive</h3>
+        <p>Loud, busy and built for meeting people.</p>
+        <span class="meter" aria-label="Interaction level 4 of 4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
+        <small>Food markets, nightlife</small>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Activity types <small>(none selected = all)</small></h2>
-    <div id="cats" class="chips"></div>
-    <label class="check"><input id="fEvents" type="checkbox" checked> Show events</label>
-    <button id="reset" class="link">Reset filters</button>
+  <section class="final">
+    <h2>Ready to find your spot?</h2>
+    <p class="lead">Open the map, pick a mood and see what fits.</p>
+    <a class="btn primary" href="app.html">Im the map!</a>
   </section>
 
-  <section id="route" hidden>
-    <h2>Directions to <span id="rName"></span></h2>
-    <p id="rSum"></p>
-    <a id="rGoogle" target="_blank" rel="noopener">Open in Google Maps</a>
-    <button id="rClear" class="link">Clear route</button>
-    <ol id="rSteps"></ol>
-  </section>
-
-  <section>
-    <h2 id="resHead">Places</h2>
-    <ol id="results"></ol>
-    <h2 id="evHead">Upcoming events</h2>
-    <ul id="events"></ul>
-  </section>
-  </div>
-  <div id="tab-friends" hidden></div>
-  <div id="tab-profile" hidden></div>
-  <p id="status" role="status"></p>
-</aside>
-<div id="map"></div>
-<dialog id="revDlg">
-  <h2 id="revTitle"></h2><p id="revAvg"></p><ul id="revList"></ul>
-  <label>Your rating <select id="revRating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
-  <textarea id="revText" rows="3" maxlength="280" placeholder="Share your experience (stays inside SocialMatch)"></textarea>
-  <button id="revPost" class="dirbtn">Post review</button> <button id="revClose" class="link">Close</button>
-</dialog>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js?v=3"></script>
-<script src="js/algorithms.js?v=3"></script>
-<script src="js/db.js?v=3"></script>
-<script src="js/map.js?v=3"></script>
-<script src="js/directions.js?v=3"></script>
-<script src="js/dummy.js?v=3"></script>
-<script src="js/social.js?v=3"></script>
-<script src="js/app.js?v=3"></script>
+  <footer>
+    <span class="brand" style="font-size:1rem"><svg style="width:22px;height:22px"><use href="#logo"/></svg>SocialMatch</span>
+    <span> J.Lacson - S.Miranda </span>
+  </footer>
+</div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// Profile, friends and in-app reviews.
+// Profile, friends, reviews and About tab.
 const REV = { list: [], pid: null };
 let profile = JSON.parse(localStorage.getItem('sm_profile') || 'null') || { ...DUMMY_PROFILE, share: true };
 const initials = n => n.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
@@ -73,13 +73,46 @@ function applyPrefs() {
   document.querySelector('#tabs button').click(); render(true);
 }
 
+function renderAbout() {
+  const legend = Object.values(LEVELS).map(v =>
+    `<li class="legend"><span class="dot" style="background:${v.color}"></span>${esc(v.label)}</li>`).join('');
+  $('tab-about').innerHTML = `
+    <div class="about-hero">
+      <h2>Find places that fit your mood</h2>
+      <p>SocialMatch ranks spots around Cebu by how well their noise, crowd, and social energy match how you feel right now.</p>
+    </div>
+
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>1</b><div>Pick one or more <em>moods</em> on the Explore tab.</div></li>
+      <li><b>2</b><div>Every place gets a <em>match score</em> from 0 to 100%. Higher means a closer fit.</div></li>
+      <li><b>3</b><div>Tap a result or a marker to see details, read reviews, or get directions.</div></li>
+      <li><b>4</b><div>Use <em>Pin a spot</em> to explore matches around any point on the map.</div></li>
+    </ol>
+
+    <h2>How the score is calculated</h2>
+    <div class="weights">
+      <div><span>Social level</span><i style="width:40%"></i><b>40%</b></div>
+      <div><span>Noise</span><i style="width:30%"></i><b>30%</b></div>
+      <div><span>Crowd</span><i style="width:30%"></i><b>30%</b></div>
+    </div>
+    <p class="meta">With several moods selected, each place shows its best match across them.</p>
+
+    <h2>Map colors</h2>
+    <ul class="legend-list">${legend}</ul>
+    <p class="meta">Bigger markers mean a better match. ★ markers are upcoming events.</p>
+
+    <h2>Credits</h2>
+    <p class="meta">Map data © OpenStreetMap contributors · Leaflet · OSRM routing · Supabase. Friends and moods shown in the Friends tab are demo data.</p>`;
+}
+
 function initSocial() {
   $('tabs').onclick = e => {
     const b = e.target.closest('button'); if (!b) return;
     document.querySelectorAll('#tabs button').forEach(x => x.setAttribute('aria-pressed', x === b));
-    ['explore', 'friends', 'profile'].forEach(t => $('tab-' + t).hidden = t !== b.dataset.t);
+    ['explore', 'friends', 'profile', 'about'].forEach(t => $('tab-' + t).hidden = t !== b.dataset.t);
   };
-  renderFriends(); renderProfile();
+  renderFriends(); renderProfile(); renderAbout();
   $('revPost').onclick = postReview; $('revClose').onclick = () => $('revDlg').close();
 }
 

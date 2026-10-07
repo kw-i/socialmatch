@@ -38,11 +38,11 @@ function ratingLine(p) {
   return s ? `<br>★ ${s.avg.toFixed(1)} (${s.n} review${s.n > 1 ? 's' : ''})` : '';
 }
 
-// After a filter change, open the details popup on visible markers within 2 km (your location, else map center), nearest 6.
+// After a filter change, open the details popup on visible markers within 2 km (pinned spot, else your location, else map center), nearest 6.
 let nearPopups = [];
 function showNearbyPopups(items) {
   nearPopups.forEach(p => map.removeLayer(p)); nearPopups = [];
-  const ref = userPos || [map.getCenter().lat, map.getCenter().lng];
+  const ref = refPos() || [map.getCenter().lat, map.getCenter().lng];
   items.map(p => ({ p, d: haversine(ref[0], ref[1], p.lat, p.lng) }))
     .filter(x => x.d <= 2).sort((a, b) => a.d - b.d).slice(0, 6).forEach(({ p }) => {
       const m = markers.get('p' + p.id);

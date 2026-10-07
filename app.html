@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SocialMatch</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<link rel="stylesheet" href="css/style.css?v=4">
+</head>
+<body>
+<aside id="panel">
+  <h1><a href="index.html" style="color:inherit;text-decoration:none">SocialMatch</a></h1>
+  <p class="sub">Pick your moods, then narrow the map by color and activity.</p>
+
+  <nav id="tabs">
+    <button data-t="explore" aria-pressed="true">Explore</button>
+    <button data-t="friends" aria-pressed="false">Friends</button>
+    <button data-t="profile" aria-pressed="false">Profile</button>
+    <button data-t="about" aria-pressed="false">About</button>
+  </nav>
+  <div id="tab-explore">
+  <section>
+    <h2>Your moods <small>(pick any)</small></h2>
+    <div id="moods" class="chips"></div>
+  </section>
+
+  <section>
+    <h2>Colors to show <small>(none selected = all)</small></h2>
+    <div id="levels" class="levels"></div>
+  </section>
+
+  <section>
+    <h2>Activity types <small>(none selected = all)</small></h2>
+    <div id="cats" class="chips"></div>
+    <label class="check"><input id="fEvents" type="checkbox" checked> Show events</label>
+    <button id="reset" class="link">Reset filters</button>
+  </section>
+
+  <section id="spotBox">
+    <h2>Explore another spot</h2>
+    <button id="pinBtn" class="dirbtn">📍 Pin a spot on the map</button>
+    <div id="spotInfo" hidden>
+      <label>Within <select id="spotRadius">
+  <option value="0.1">100 m</option>
+  <option value="0.25">250 m</option>
+  <option value="0.5">500 m</option>
+  <option value="1">1 km</option>
+  <option value="2" selected>2 km</option>
+  <option value="3">3 km</option>
+  <option value="4">4 km</option>
+  <option value="5">5 km</option>
+</select></label>
+      <button id="spotClear" class="link">Clear spot</button>
+    </div>
+  </section>
+
+  <section id="route" hidden>
+    <h2>Directions to <span id="rName"></span></h2>
+    <p id="rSum"></p>
+    <a id="rGoogle" target="_blank" rel="noopener">Open in Google Maps</a>
+    <button id="rClear" class="link">Clear route</button>
+    <ol id="rSteps"></ol>
+  </section>
+
+  <section>
+    <h2 id="resHead">Places</h2>
+    <ol id="results"></ol>
+    <h2 id="evHead">Upcoming events</h2>
+    <ul id="events"></ul>
+  </section>
+  </div>
+  <div id="tab-friends" hidden></div>
+  <div id="tab-profile" hidden></div>
+  <div id="tab-about" hidden></div>
+  <p id="status" role="status"></p>
+</aside>
+<div id="map"></div>
+<dialog id="revDlg">
+  <h2 id="revTitle"></h2><p id="revAvg"></p><ul id="revList"></ul>
+  <label>Your rating <select id="revRating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
+  <textarea id="revText" rows="3" maxlength="280" placeholder="Share your experience (stays inside SocialMatch)"></textarea>
+  <button id="revPost" class="dirbtn">Post review</button> <button id="revClose" class="link">Close</button>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js?v=4"></script>
+<script src="js/algorithms.js?v=4"></script>
+<script src="js/db.js?v=4"></script>
+<script src="js/map.js?v=4"></script>
+<script src="js/directions.js?v=4"></script>
+<script src="js/dummy.js?v=4"></script>
+<script src="js/social.js?v=4"></script>
+<script src="js/spot.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
+</body>
+</html>
