@@ -8,18 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:
-#0b1622;--panel:
-#12263a;--line:
-#23405a;--ink:
-#e7f0f7;--mut:
-#8fa7ba;--accent:
-#5bd6c9;
---l1:
-#4f86f0;--l2:
-#2fb98c;--l3:
-#f0b429;--l4:
-#ee5a73}
+:root{--bg:#0b1622;--panel:#12263a;--line:#23405a;--ink:#e7f0f7;--mut:#8fa7ba;--accent:#5bd6c9;
+--l1:#4f86f0;--l2:#2fb98c;--l3:#f0b429;--l4:#ee5a73}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;position:relative;font-family:'Familjen Grotesk',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
@@ -34,8 +24,7 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.3rem;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
 .brand svg{width:43px;height:43px}
 .btn{display:inline-block;font:inherit;font-weight:600;text-decoration:none;padding:12px 24px;border-radius:999px;border:1.5px solid var(--accent);color:var(--accent);cursor:pointer}
-.btn.primary{background:var(--accent);color:
-#06141f}
+.btn.primary{background:var(--accent);color:#06141f}
 .btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding:56px 0 80px;position:relative}
 .hero h1{font-size:clamp(2.4rem,6.4vw,4.2rem);line-height:1;letter-spacing:-.035em;margin:0 0 18px}
@@ -56,10 +45,28 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .step{padding:24px;background:var(--panel)}
 .step+.step{border-left:1px solid var(--line)}
-.step .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:
-#06141f;font-weight:700;margin-bottom:12px}
+.step .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#06141f;font-weight:700;margin-bottom:12px}
 .step h3{margin:0 0 4px;font-size:1.1rem}
 .step p{margin:0;color:var(--mut);font-size:.95rem}
+
+/* Pin a spot tutorial */
+.tut{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.tsteps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.tsteps li{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.tsteps .n{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#06141f;font-weight:700}
+.tsteps h3{margin:0 0 2px;font-size:1.05rem}
+.tsteps p{margin:0;color:var(--mut);font-size:.93rem}
+.tsteps kbd{font:inherit;font-size:.85rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.demo{position:relative;aspect-ratio:1/1;border-radius:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
+.demo svg.bgm{position:absolute;inset:0;width:100%;height:100%;color:var(--line)}
+.demo .ring{position:absolute;left:50%;top:44%;width:64%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.demo .dpin{position:absolute;left:50%;top:44%;transform:translate(-50%,-92%);font-size:2.2rem;line-height:1;filter:drop-shadow(0 3px 3px rgba(0,0,0,.5))}
+.demo .pin.out{opacity:.3}
+.demo .tag{position:absolute;left:50%;top:44%;transform:translate(8%,-210%);font-size:.78rem;font-weight:700;color:#06141f;background:var(--accent);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.demo .radii{position:absolute;left:6%;right:6%;bottom:5%;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.demo .radii span{font-size:.78rem;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--mut)}
+.demo .radii span.on{background:var(--accent);border-color:var(--accent);color:#06141f;font-weight:700}
 
 /* Color boxes */
 .spec{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -81,18 +88,15 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .final .lead{margin:0 auto 26px}
 footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:.88rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media(prefers-reduced-motion:no-preference){.pin::after{animation:p 2.6s ease-out infinite}@keyframes p{0%{transform:scale(.6);opacity:.6}100%{transform:scale(1.5);opacity:0}}}
-@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.tut{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo" viewBox="0 0 32 32">
-    <path d="M16 2a10 10 0 0 0-10 10c0 7 10 18 10 18s10-11 10-18A10 10 0 0 0 16 2z" fill="
-#5bd6c9"/>
-    <circle cx="13" cy="12" r="4" fill="none" stroke="
-#0b1622" stroke-width="2"/>
-    <circle cx="19" cy="12" r="4" fill="none" stroke="
-#0b1622" stroke-width="2"/>
+    <path d="M16 2a10 10 0 0 0-10 10c0 7 10 18 10 18s10-11 10-18A10 10 0 0 0 16 2z" fill="#5bd6c9"/>
+    <circle cx="13" cy="12" r="4" fill="none" stroke="#0b1622" stroke-width="2"/>
+    <circle cx="19" cy="12" r="4" fill="none" stroke="#0b1622" stroke-width="2"/>
   </symbol>
   <defs>
     <g id="rings" opacity=".55">
@@ -163,6 +167,39 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
     </div>
   </section>
 
+  <section id="pin">
+    <h2>Explore any spot with Pin a spot</h2>
+    <p class="lead">Planning ahead or meeting friends somewhere else? Drop a pin anywhere and see the best matches around it.</p>
+    <div class="tut">
+      <ol class="tsteps">
+        <li><span class="n">1</span><div><h3>Open Explore</h3><p>On the map page, find <b>Explore another spot</b> and tap <kbd>📍 Pin a spot on the map</kbd>.</p></div></li>
+        <li><span class="n">2</span><div><h3>Tap the map</h3><p>Tap any empty part of the map to drop your pin. Drag it later to move it.</p></div></li>
+        <li><span class="n">3</span><div><h3>Choose a radius</h3><p>Pick anything from 100 m to 5 km. The circle shows what is included.</p></div></li>
+        <li><span class="n">4</span><div><h3>Read your matches</h3><p>The list, events and popups now show places near your pin. Tap <kbd>Clear spot</kbd> to go back to your location.</p></div></li>
+      </ol>
+      <div class="demo" role="img" aria-label="Map with a pin, a circle around it showing the chosen radius, and radius options from 100 meters to 5 kilometers">
+        <svg class="bgm" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M-10 80 C90 50 160 140 260 100 S380 70 420 110"/>
+          <path d="M-10 270 C80 250 150 320 230 290 S360 250 420 300"/>
+          <path d="M110 -10 C130 80 90 160 140 240 S150 340 130 410"/>
+          <path d="M300 -10 C280 70 330 150 300 230 S320 340 340 410"/>
+        </svg>
+        <span class="ring"></span>
+        <span class="pin" style="left:40%;top:36%;background:var(--l2);color:var(--l2)"></span>
+        <span class="pin" style="left:60%;top:50%;background:var(--l3);color:var(--l3)"></span>
+        <span class="pin" style="left:46%;top:56%;background:var(--l1);color:var(--l1)"></span>
+        <span class="pin out" style="left:12%;top:14%;background:var(--l4);color:var(--l4)"></span>
+        <span class="pin out" style="left:88%;top:22%;background:var(--l2);color:var(--l2)"></span>
+        <span class="pin out" style="left:86%;top:76%;background:var(--l3);color:var(--l3)"></span>
+        <span class="tag">3 places nearby</span>
+        <span class="dpin" aria-hidden="true">📍</span>
+        <div class="radii" aria-hidden="true">
+          <span>100 m</span><span>250 m</span><span>500 m</span><span>1 km</span><span class="on">2 km</span><span>3 km</span><span>5 km</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section>
     <h2>Read the map by color</h2>
     <p class="lead">Every pin shows how much people interact at that place.</p>
@@ -197,7 +234,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
   <section class="final">
     <h2>Ready to find your spot?</h2>
     <p class="lead">Open the map, pick a mood and see what fits.</p>
-    <a class="btn primary" href="app.html">Im the map!</a>
+    <a class="btn primary" href="app.html">Open the map</a>
   </section>
 
   <footer>
