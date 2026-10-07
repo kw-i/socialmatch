@@ -56,7 +56,7 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .tsteps .n{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#06141f;font-weight:700}
 .tsteps h3{margin:0 0 2px;font-size:1.05rem}
 .tsteps p{margin:0;color:var(--mut);font-size:.93rem}
-.tsteps kbd{font:inherit;font-size:.85rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.tsteps kbd{display:inline-block;white-space:nowrap;margin-top:6px;font:inherit;font-size:.85rem;padding:2px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 .demo{position:relative;aspect-ratio:1/1;border-radius:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
 .demo svg.bgm{position:absolute;inset:0;width:100%;height:100%;color:var(--line)}
 .demo .ring{position:absolute;left:50%;top:44%;width:64%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
@@ -67,6 +67,16 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .demo .radii{position:absolute;left:6%;right:6%;bottom:5%;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .demo .radii span{font-size:.78rem;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--mut)}
 .demo .radii span.on{background:var(--accent);border-color:var(--accent);color:#06141f;font-weight:700}
+
+
+/* Radius boxes */
+.radgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
+.rad{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:16px 10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.rad .c{display:grid;place-items:center;width:72px;height:72px;margin-bottom:6px}
+.rad .c i{display:block;border-radius:50%;border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.rad b{font-size:1.15rem}
+.rad small{color:var(--mut);font-size:.82rem}
+.rad.def{border-color:var(--accent)}
 
 /* Color boxes */
 .spec{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -88,7 +98,7 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .final .lead{margin:0 auto 26px}
 footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:.88rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media(prefers-reduced-motion:no-preference){.pin::after{animation:p 2.6s ease-out infinite}@keyframes p{0%{transform:scale(.6);opacity:.6}100%{transform:scale(1.5);opacity:0}}}
-@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.tut{grid-template-columns:1fr}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.tut{grid-template-columns:1fr}.radgrid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -172,9 +182,9 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
     <p class="lead">Planning ahead or meeting friends somewhere else? Drop a pin anywhere and see the best matches around it.</p>
     <div class="tut">
       <ol class="tsteps">
-        <li><span class="n">1</span><div><h3>Open Explore</h3><p>On the map page, find <b>Explore another spot</b> and tap <kbd>📍 Pin a spot on the map</kbd>.</p></div></li>
+        <li><span class="n">1</span><div><h3>Open Explore</h3><p>On the map page, find <b>Explore another spot</b> and tap<br><kbd>📍 Pin a spot on the map</kbd></p></div></li>
         <li><span class="n">2</span><div><h3>Tap the map</h3><p>Tap any empty part of the map to drop your pin. Drag it later to move it.</p></div></li>
-        <li><span class="n">3</span><div><h3>Choose a radius</h3><p>Pick anything from 100 m to 5 km. The circle shows what is included.</p></div></li>
+        <li><span class="n">3</span><div><h3>Choose a radius</h3><p>Choose 100 m, 250 m, 500 m, 1, 2, 3, 4 or 5 km. The circle shows what is included.</p></div></li>
         <li><span class="n">4</span><div><h3>Read your matches</h3><p>The list, events and popups now show places near your pin. Tap <kbd>Clear spot</kbd> to go back to your location.</p></div></li>
       </ol>
       <div class="demo" role="img" aria-label="Map with a pin, a circle around it showing the chosen radius, and radius options from 100 meters to 5 kilometers">
@@ -194,9 +204,19 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
         <span class="tag">3 places nearby</span>
         <span class="dpin" aria-hidden="true">📍</span>
         <div class="radii" aria-hidden="true">
-          <span>100 m</span><span>250 m</span><span>500 m</span><span>1 km</span><span class="on">2 km</span><span>3 km</span><span>5 km</span>
+          <span>100 m</span><span>250 m</span><span>500 m</span><span>1 km</span><span class="on">2 km</span><span>3 km</span><span>4 km</span><span>5 km</span>
         </div>
       </div>
+    </div>
+    <div class="radgrid" aria-label="Radius options from 100 meters to 5 kilometers">
+      <div class="rad"><span class="c"><i style="width:14px;height:14px"></i></span><b>100 m</b><small>Right here</small></div>
+      <div class="rad"><span class="c"><i style="width:20px;height:20px"></i></span><b>250 m</b><small>Next block</small></div>
+      <div class="rad"><span class="c"><i style="width:26px;height:26px"></i></span><b>500 m</b><small>Short walk</small></div>
+      <div class="rad"><span class="c"><i style="width:34px;height:34px"></i></span><b>1 km</b><small>Walkable</small></div>
+      <div class="rad def"><span class="c"><i style="width:44px;height:44px"></i></span><b>2 km</b><small>Nearby area · default</small></div>
+      <div class="rad"><span class="c"><i style="width:52px;height:52px"></i></span><b>3 km</b><small>Short ride</small></div>
+      <div class="rad"><span class="c"><i style="width:58px;height:58px"></i></span><b>4 km</b><small>Across the district</small></div>
+      <div class="rad"><span class="c"><i style="width:64px;height:64px"></i></span><b>5 km</b><small>Widest search</small></div>
     </div>
   </section>
 
@@ -234,7 +254,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
   <section class="final">
     <h2>Ready to find your spot?</h2>
     <p class="lead">Open the map, pick a mood and see what fits.</p>
-    <a class="btn primary" href="app.html">Open the map</a>
+    <a class="btn primary" href="app.html">Im the map!</a>
   </section>
 
   <footer>
