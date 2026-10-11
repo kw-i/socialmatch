@@ -5,10 +5,7 @@ function locate() {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) return reject(new Error('Your browser does not support location.'));
     navigator.geolocation.getCurrentPosition(pos => {
-      userPos = [pos.coords.latitude, pos.coords.longitude];
-      if (userMarker) userMarker.setLatLng(userPos);
-      else userMarker = L.circleMarker(userPos, { radius: 7, color: '#fff', weight: 3, fillColor: '#1d6f8c', fillOpacity: 1 })
-        .addTo(map).bindTooltip('You are here');
+      setUserPos(pos.coords); checkGeofence(pos.coords.accuracy);
       resolve(userPos);
     }, () => reject(new Error('Location blocked. Allow location access for this site and try again.')),
     { enableHighAccuracy: true, timeout: 10000 });
@@ -37,7 +34,6 @@ async function showRoute(lat, lng, name) {
     const box = document.getElementById('route');
     box.hidden = false; box.scrollIntoView({ behavior: 'smooth' });
     status.textContent = '';
-    render(); // refresh distances in the list
   } catch (err) {
     status.textContent = err.message;
     if (userPos) { // routing failed but we know where the user is: keep the Google Maps link usable

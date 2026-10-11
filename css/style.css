@@ -64,8 +64,9 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 .legend{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
 
-/* ---- Pin a spot ---- */
-.spotpin{font-size:28px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
-#spotInfo{margin-top:8px}
-#spotInfo label{display:inline-flex;align-items:center;gap:6px;margin:0 12px 0 0}
-#spotInfo select{width:auto;margin:0}
+/* ---- Geofence zones ---- */
+#geoBox .meta{margin:0 0 6px}
+.dirbtn[aria-pressed=true]{background:#d6455d}
+#zoneInfo{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-left:6px solid var(--c,var(--line));border-radius:8px;font-size:.9rem}
+#zoneInfo .zonename{font-weight:700;font-size:1.05rem}
+.zonechip{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:-1px}

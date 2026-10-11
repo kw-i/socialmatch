@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 <aside id="panel">
@@ -29,7 +29,7 @@
   </section>
 
   <section>
-    <h2>Colors to show <small>(none selected = all)</small></h2>
+    <h2>Interaction colors <small>(none selected = all)</small></h2>
     <div id="levels" class="levels"></div>
   </section>
 
@@ -40,22 +40,12 @@
     <button id="reset" class="link">Reset filters</button>
   </section>
 
-  <section id="spotBox">
-    <h2>Explore another spot</h2>
-    <button id="pinBtn" class="dirbtn">📍 Pin a spot on the map</button>
-    <div id="spotInfo" hidden>
-      <label>Within <select id="spotRadius">
-  <option value="0.1">100 m</option>
-  <option value="0.25">250 m</option>
-  <option value="0.5">500 m</option>
-  <option value="1">1 km</option>
-  <option value="2" selected>2 km</option>
-  <option value="3">3 km</option>
-  <option value="4">4 km</option>
-  <option value="5">5 km</option>
-</select></label>
-      <button id="spotClear" class="link">Clear spot</button>
-    </div>
+  <section id="geoBox">
+    <h2>Geofence zones</h2>
+    <p class="meta">Each place has a zone shaded in its interaction color.</p>
+    <label class="check"><input id="fZones" type="checkbox" checked> Show zones on the map</label>
+    <button id="trackBtn" class="dirbtn" aria-pressed="false">📡 Start live geofencing</button>
+    <div id="zoneInfo" hidden aria-live="polite"></div>
   </section>
 
   <section id="route" hidden>
@@ -89,14 +79,14 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js?v=4"></script>
-<script src="js/algorithms.js?v=4"></script>
-<script src="js/db.js?v=4"></script>
-<script src="js/map.js?v=4"></script>
-<script src="js/directions.js?v=4"></script>
-<script src="js/dummy.js?v=4"></script>
-<script src="js/social.js?v=4"></script>
-<script src="js/spot.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/config.js?v=5"></script>
+<script src="js/algorithms.js?v=5"></script>
+<script src="js/db.js?v=5"></script>
+<script src="js/map.js?v=5"></script>
+<script src="js/directions.js?v=5"></script>
+<script src="js/dummy.js?v=5"></script>
+<script src="js/social.js?v=5"></script>
+<script src="js/geofence.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>

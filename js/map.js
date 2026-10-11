@@ -1,4 +1,5 @@
-const map = L.map('map').setView(MAP_CENTER, 13);
+const BACOLOD_CENTER = [10.6713, 122.9511]; // Bacolod City, Negros Occidental
+const map = L.map('map').setView(BACOLOD_CENTER, 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
@@ -18,7 +19,7 @@ function addPlaceMarker(p, score) {
   const m = L.circleMarker([p.lat, p.lng], {
     radius: 8 + (score ?? 50) / 20, color: '#fff', weight: 2, fillColor: lv.color, fillOpacity: .9
   }).bindPopup(`<b>${esc(p.name)}</b><br>${esc(p.category)} · ${lv.label}<br>
-    Noise ${p.noise_level}/5 · Crowd ${p.crowd_level}/5<br>
+    Noise ${p.noise_level}/5 · Crowd ${p.crowd_level}/5 · Zone ${zoneRadius(p)} m<br>
     ${score == null ? '' : `Match: <b>${score}%</b><br>`}${esc(p.description)}${ratingLine(p)}${dirButton(p.lat, p.lng, p.name)} <button class="dirbtn revbtn" data-pid="${p.id}">Reviews</button>`);
   m.addTo(layer);
   return m;
@@ -38,7 +39,7 @@ function ratingLine(p) {
   return s ? `<br>★ ${s.avg.toFixed(1)} (${s.n} review${s.n > 1 ? 's' : ''})` : '';
 }
 
-// After a filter change, open the details popup on visible markers within 2 km (pinned spot, else your location, else map center), nearest 6.
+// After a filter change, open the details popup on visible markers within 2 km (your location, else map center), nearest 6.
 let nearPopups = [];
 function showNearbyPopups(items) {
   nearPopups.forEach(p => map.removeLayer(p)); nearPopups = [];

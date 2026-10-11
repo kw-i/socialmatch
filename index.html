@@ -49,7 +49,7 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .step h3{margin:0 0 4px;font-size:1.1rem}
 .step p{margin:0;color:var(--mut);font-size:.95rem}
 
-/* Pin a spot tutorial */
+/* Geofence tutorial */
 .tut{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
 .tsteps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .tsteps li{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
@@ -59,24 +59,11 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .tsteps kbd{display:inline-block;white-space:nowrap;margin-top:6px;font:inherit;font-size:.85rem;padding:2px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 .demo{position:relative;aspect-ratio:1/1;border-radius:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
 .demo svg.bgm{position:absolute;inset:0;width:100%;height:100%;color:var(--line)}
-.demo .ring{position:absolute;left:50%;top:44%;width:64%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
-  border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
-.demo .dpin{position:absolute;left:50%;top:44%;transform:translate(-50%,-92%);font-size:2.2rem;line-height:1;filter:drop-shadow(0 3px 3px rgba(0,0,0,.5))}
-.demo .pin.out{opacity:.3}
-.demo .tag{position:absolute;left:50%;top:44%;transform:translate(8%,-210%);font-size:.78rem;font-weight:700;color:#06141f;background:var(--accent);border-radius:999px;padding:2px 10px;white-space:nowrap}
-.demo .radii{position:absolute;left:6%;right:6%;bottom:5%;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.demo .radii span{font-size:.78rem;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--mut)}
-.demo .radii span.on{background:var(--accent);border-color:var(--accent);color:#06141f;font-weight:700}
-
-
-/* Radius boxes */
-.radgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
-.rad{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:16px 10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
-.rad .c{display:grid;place-items:center;width:72px;height:72px;margin-bottom:6px}
-.rad .c i{display:block;border-radius:50%;border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
-.rad b{font-size:1.15rem}
-.rad small{color:var(--mut);font-size:.82rem}
-.rad.def{border-color:var(--accent)}
+.zone{position:absolute;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)}
+.zone.on{border-width:3px;background:color-mix(in srgb,var(--c) 38%,transparent)}
+.you{position:absolute;width:16px;height:16px;border-radius:50%;background:#4fa3f0;border:3px solid #fff;transform:translate(-50%,-50%);box-shadow:0 0 0 6px rgba(79,163,240,.25)}
+.demo .tag{position:absolute;left:50%;top:7%;transform:translateX(-50%);font-size:.8rem;font-weight:700;color:#06141f;background:var(--l3);border-radius:999px;padding:3px 12px;white-space:nowrap}
+.demo .zl{position:absolute;font-size:.72rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 7px;transform:translate(-50%,0);white-space:nowrap}
 
 /* Color boxes */
 .spec{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -98,7 +85,7 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .final .lead{margin:0 auto 26px}
 footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:.88rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media(prefers-reduced-motion:no-preference){.pin::after{animation:p 2.6s ease-out infinite}@keyframes p{0%{transform:scale(.6);opacity:.6}100%{transform:scale(1.5);opacity:0}}}
-@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.tut{grid-template-columns:1fr}.radgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.tut{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -141,7 +128,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
   <header class="hero">
     <div>
       <h1>Go where your social energy fits.</h1>
-      <p>Feeling quiet, curious or ready to meet people? Pick a mood and SocialMatch ranks nearby places and events by noise, crowd and how much people interact.</p>
+      <p>Feeling quiet, curious or ready to meet people? Pick a mood and SocialMatch ranks places and events around Bacolod City by noise, crowd and how much people interact.</p>
       <div class="cta">
         <a class="btn primary" href="app.html">Open the map</a>
         <a class="btn" href="#how">How it works</a>
@@ -162,7 +149,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
       <div class="match">
         <div class="row"><span>Mood: Chill</span><b>Best match 96%</b></div>
         <div class="bar"><i style="width:96%"></i></div>
-        <div class="row"><span>Quiet park</span><span>Low interaction</span></div>
+        <div class="row"><span>Capitol Park and Lagoon</span><span>Low interaction</span></div>
       </div>
     </div>
   </header>
@@ -177,76 +164,63 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
     </div>
   </section>
 
-  <section id="pin">
-    <h2>Explore any spot with Pin a spot</h2>
-    <p class="lead">Planning ahead or meeting friends somewhere else? Drop a pin anywhere and see the best matches around it.</p>
+  <section id="geo">
+    <h2>Geofencing, shown in color</h2>
+    <p class="lead">Every place in Bacolod has a zone shaded in its interaction color. Turn on live geofencing and SocialMatch tells you which zone you are standing in.</p>
     <div class="tut">
       <ol class="tsteps">
-        <li><span class="n">1</span><div><h3>Open Explore</h3><p>On the map page, find <b>Explore another spot</b> and tap<br><kbd>📍 Pin a spot on the map</kbd></p></div></li>
-        <li><span class="n">2</span><div><h3>Tap the map</h3><p>Tap any empty part of the map to drop your pin. Drag it later to move it.</p></div></li>
-        <li><span class="n">3</span><div><h3>Choose a radius</h3><p>Choose 100 m, 250 m, 500 m, 1, 2, 3, 4 or 5 km. The circle shows what is included.</p></div></li>
-        <li><span class="n">4</span><div><h3>Read your matches</h3><p>The list, events and popups now show places near your pin. Tap <kbd>Clear spot</kbd> to go back to your location.</p></div></li>
+        <li><span class="n">1</span><div><h3>Open Explore</h3><p>On the map page, find <b>Geofence zones</b> and tap<br><kbd>📡 Start live geofencing</kbd></p></div></li>
+        <li><span class="n">2</span><div><h3>Allow your location</h3><p>Your browser asks once. Your position is only used on your device to check which zones you are in.</p></div></li>
+        <li><span class="n">3</span><div><h3>Walk into a zone</h3><p>The zone brightens and the panel shows its name and color. You also get a notice when you enter or leave.</p></div></li>
+        <li><span class="n">4</span><div><h3>Filter by color</h3><p>Use <b>Interaction colors</b> to show only the zones, places and events with the energy you want.</p></div></li>
       </ol>
-      <div class="demo" role="img" aria-label="Map with a pin, a circle around it showing the chosen radius, and radius options from 100 meters to 5 kilometers">
+      <div class="demo" role="img" aria-label="Map of Bacolod with four colored geofence zones and a blue dot standing inside the yellow casual social zone">
         <svg class="bgm" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M-10 80 C90 50 160 140 260 100 S380 70 420 110"/>
           <path d="M-10 270 C80 250 150 320 230 290 S360 250 420 300"/>
           <path d="M110 -10 C130 80 90 160 140 240 S150 340 130 410"/>
           <path d="M300 -10 C280 70 330 150 300 230 S320 340 340 410"/>
         </svg>
-        <span class="ring"></span>
-        <span class="pin" style="left:40%;top:36%;background:var(--l2);color:var(--l2)"></span>
-        <span class="pin" style="left:60%;top:50%;background:var(--l3);color:var(--l3)"></span>
-        <span class="pin" style="left:46%;top:56%;background:var(--l1);color:var(--l1)"></span>
-        <span class="pin out" style="left:12%;top:14%;background:var(--l4);color:var(--l4)"></span>
-        <span class="pin out" style="left:88%;top:22%;background:var(--l2);color:var(--l2)"></span>
-        <span class="pin out" style="left:86%;top:76%;background:var(--l3);color:var(--l3)"></span>
-        <span class="tag">3 places nearby</span>
-        <span class="dpin" aria-hidden="true">📍</span>
-        <div class="radii" aria-hidden="true">
-          <span>100 m</span><span>250 m</span><span>500 m</span><span>1 km</span><span class="on">2 km</span><span>3 km</span><span>4 km</span><span>5 km</span>
-        </div>
+        <span class="zone" style="--c:var(--l1);left:20%;top:30%;width:26%"></span>
+        <span class="zone" style="--c:var(--l2);left:76%;top:28%;width:30%"></span>
+        <span class="zone on" style="--c:var(--l3);left:48%;top:58%;width:42%"></span>
+        <span class="zone" style="--c:var(--l4);left:80%;top:78%;width:24%"></span>
+        <span class="zl" style="left:20%;top:44%">Solo</span>
+        <span class="zl" style="left:76%;top:42%">Low</span>
+        <span class="zl" style="left:80%;top:90%">High</span>
+        <span class="you" style="left:46%;top:56%"></span>
+        <span class="tag">You are in a Casual social zone</span>
       </div>
-    </div>
-    <div class="radgrid" aria-label="Radius options from 100 meters to 5 kilometers">
-      <div class="rad"><span class="c"><i style="width:14px;height:14px"></i></span><b>100 m</b><small>Right here</small></div>
-      <div class="rad"><span class="c"><i style="width:20px;height:20px"></i></span><b>250 m</b><small>Next block</small></div>
-      <div class="rad"><span class="c"><i style="width:26px;height:26px"></i></span><b>500 m</b><small>Short walk</small></div>
-      <div class="rad"><span class="c"><i style="width:34px;height:34px"></i></span><b>1 km</b><small>Walkable</small></div>
-      <div class="rad def"><span class="c"><i style="width:44px;height:44px"></i></span><b>2 km</b><small>Nearby area · default</small></div>
-      <div class="rad"><span class="c"><i style="width:52px;height:52px"></i></span><b>3 km</b><small>Short ride</small></div>
-      <div class="rad"><span class="c"><i style="width:58px;height:58px"></i></span><b>4 km</b><small>Across the district</small></div>
-      <div class="rad"><span class="c"><i style="width:64px;height:64px"></i></span><b>5 km</b><small>Widest search</small></div>
     </div>
   </section>
 
   <section>
     <h2>Read the map by color</h2>
-    <p class="lead">Every pin shows how much people interact at that place.</p>
+    <p class="lead">Every geofence zone and pin shows how much people interact at that place.</p>
     <div class="spec">
       <div class="lv" style="--c:var(--l1)">
         <span class="dot"></span><h3>Solo</h3>
         <p>Quiet spots for reading or thinking.</p>
         <span class="meter" aria-label="Interaction level 1 of 4"><i class="on"></i><i></i><i></i><i></i></span>
-        <small>Gardens, viewpoints</small>
+        <small>Museums, quiet landmarks</small>
       </div>
       <div class="lv" style="--c:var(--l2)">
         <span class="dot"></span><h3>Low interaction</h3>
         <p>Calm places with people nearby.</p>
         <span class="meter" aria-label="Interaction level 2 of 4"><i class="on"></i><i class="on"></i><i></i><i></i></span>
-        <small>Plazas, landmarks</small>
+        <small>Lagoon parks, heritage grounds</small>
       </div>
       <div class="lv" style="--c:var(--l3)">
         <span class="dot"></span><h3>Casual social</h3>
         <p>Easy to start a chat.</p>
         <span class="meter" aria-label="Interaction level 3 of 4"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>
-        <small>Cafés, malls, parks</small>
+        <small>Malls, plazas, markets</small>
       </div>
       <div class="lv" style="--c:var(--l4)">
         <span class="dot"></span><h3>Highly interactive</h3>
         <p>Loud, busy and built for meeting people.</p>
         <span class="meter" aria-label="Interaction level 4 of 4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
-        <small>Food markets, nightlife</small>
+        <small>Manokan, Lacson Street nightlife</small>
       </div>
     </div>
   </section>
@@ -254,7 +228,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
   <section class="final">
     <h2>Ready to find your spot?</h2>
     <p class="lead">Open the map, pick a mood and see what fits.</p>
-    <a class="btn primary" href="app.html">Im the map!</a>
+    <a class="btn primary" href="app.html">Open the map!</a>
   </section>
 
   <footer>

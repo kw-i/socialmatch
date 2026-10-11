@@ -17,7 +17,8 @@ create table if not exists places (
   noise_level int not null check (noise_level between 1 and 5),
   crowd_level int not null check (crowd_level between 1 and 5),
   social_level int not null check (social_level between 1 and 4), -- 1 solo, 2 low, 3 casual, 4 high
-  description text
+  description text,
+  geofence_m int not null default 150 -- radius of the place's geofence zone, in meters
 );
 
 create table if not exists events (
@@ -40,26 +41,26 @@ create policy "public read moods" on moods for select using (true);
 create policy "public read places" on places for select using (true);
 create policy "public read events" on events for select using (true);
 
--- Seed data (coordinates are approximate; edit freely)
+-- Seed data (Bacolod City, Negros Occidental. Coordinates and geofence radii are approximate; edit freely)
 insert into moods (name, emoji, pref_noise, pref_crowd, pref_social) values
  ('Relaxed','🌿',1,1,1), ('Reflective','📖',2,1,1), ('Chill','☕',2,2,2),
  ('Friendly','🙂',3,3,3), ('Energetic','⚡',4,4,4), ('Party','🎉',5,5,4);
 
-insert into places (name, lat, lng, category, noise_level, crowd_level, social_level, description) values
- ('Cebu Taoist Temple', 10.3376, 123.8914, 'Landmark', 1, 2, 1, 'Hilltop temple with a quiet city view.'),
- ('Cebu Botanical Garden', 10.3275, 123.8963, 'Park', 1, 1, 1, 'Green space for walking or reading alone.'),
- ('Plaza Independencia', 10.2925, 123.9055, 'Park', 2, 2, 2, 'Open plaza beside Fort San Pedro.'),
- ('Magellan''s Cross', 10.2935, 123.9021, 'Landmark', 2, 3, 2, 'Historic site with steady foot traffic.'),
- ('Fuente Osmeña Circle', 10.3111, 123.8910, 'Park', 3, 3, 3, 'Central park with food stalls and benches.'),
- ('Ayala Center Cebu', 10.3187, 123.9052, 'Mall', 3, 4, 3, 'Mall with cafés, shops and a garden terrace.'),
- ('Sugbo Mercado', 10.3290, 123.9060, 'Food market', 4, 4, 4, 'Open-air food market with shared tables.'),
- ('IT Park Night Strip', 10.3300, 123.9055, 'Nightlife', 5, 5, 4, 'Bars and live music, busiest on weekends.'),
- ('SM Seaside City', 10.2823, 123.8800, 'Mall', 3, 4, 3, 'Large mall with a seaside promenade.'),
- ('Carbon Market', 10.2920, 123.8985, 'Market', 4, 5, 3, 'Busy public market for a local feel.');
+insert into places (name, lat, lng, category, noise_level, crowd_level, social_level, description, geofence_m) values
+ ('San Sebastian Cathedral', 10.6770, 122.9560, 'Landmark', 1, 2, 1, 'Quiet cathedral beside the plaza, good for a calm moment.', 80),
+ ('Capitol Park and Lagoon', 10.6638, 122.9500, 'Park', 2, 2, 2, 'Lagoon walks and benches around the Provincial Capitol.', 200),
+ ('Negros Museum', 10.6648, 122.9525, 'Landmark', 1, 2, 1, 'Heritage museum for slow, quiet browsing.', 100),
+ ('Bacolod Public Plaza', 10.6765, 122.9565, 'Park', 2, 3, 3, 'Open plaza with benches, vendors and evening strollers.', 150),
+ ('The Ruins (Talisay)', 10.7345, 122.9620, 'Landmark', 2, 3, 2, 'Famous mansion ruins with wide grounds and a café.', 250),
+ ('Robinsons Place Bacolod', 10.6893, 122.9600, 'Mall', 3, 4, 3, 'Mall with cafés, shops and open seating.', 200),
+ ('SM City Bacolod', 10.6935, 122.9480, 'Mall', 3, 4, 3, 'Large mall in the North Reclamation Area.', 250),
+ ('Manokan Country', 10.6800, 122.9420, 'Food market', 4, 4, 4, 'Row of chicken inasal grills with shared tables by the bay.', 150),
+ ('Lacson Street Eat Street', 10.6800, 122.9570, 'Nightlife', 5, 5, 4, 'Bars, grills and live music, busiest on weekends.', 200),
+ ('Libertad Public Market', 10.6615, 122.9460, 'Market', 4, 5, 3, 'Busy public market for a local feel.', 150);
 
 insert into events (title, lat, lng, event_date, category, social_level, place_id, description) values
- ('Sunday Sketch Walk', 10.3275, 123.8963, now() + interval '2 days', 'Art', 2, 2, 'Casual group sketching, all levels.'),
- ('Open Mic Night', 10.3300, 123.9055, now() + interval '3 days', 'Music', 4, 8, 'Live acoustic sets and jam sessions.'),
- ('Food Market Meetup', 10.3290, 123.9060, now() + interval '5 days', 'Food', 3, 7, 'Meet other food lovers at shared tables.'),
- ('Silent Reading Hour', 10.3187, 123.9052, now() + interval '1 day', 'Books', 1, 6, 'Read together in silence, no talking.'),
- ('Friday Night Party', 10.3300, 123.9055, now() + interval '6 days', 'Party', 4, 8, 'DJ set and dance floor.');
+ ('Sunday Sketch Walk', 10.6638, 122.9500, now() + interval '2 days', 'Art', 2, 2, 'Casual group sketching around the lagoon, all levels.'),
+ ('Open Mic Night', 10.6800, 122.9570, now() + interval '3 days', 'Music', 4, 9, 'Live acoustic sets and jam sessions.'),
+ ('Inasal Meetup', 10.6800, 122.9420, now() + interval '5 days', 'Food', 3, 8, 'Meet other food lovers at shared tables.'),
+ ('Silent Reading Hour', 10.6648, 122.9525, now() + interval '1 day', 'Books', 1, 3, 'Read together in silence, no talking.'),
+ ('MassKara Street Dance', 10.6765, 122.9565, now() + interval '6 days', 'Festival', 4, 4, 'Colorful masks, music and street dancing.');

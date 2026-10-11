@@ -11,8 +11,7 @@ function render(popups) {
   layer.clearLayers(); markers.clear();
   const prefs = state.moods.filter(m => state.moodIds.has(m.id))
     .map(m => ({ noise: m.pref_noise, crowd: m.pref_crowd, social: m.pref_social }));
-  const ref = refPos();                              // pinned spot, else your location
-  const rad = spot ? +$('spotRadius').value : null;  // radius in km (only when a spot is pinned)
+  const ref = refPos();                              // your location (null until tracking)
 
   const all = filterPlaces(state.places, { cats: state.cats, levels: state.levels }).map(p => ({
     ...p,
@@ -20,25 +19,20 @@ function render(popups) {
     score: prefs.length ? Math.max(...prefs.map(pr => socialScore(p, pr))) : null,
     dist: ref ? haversine(ref[0], ref[1], p.lat, p.lng) : null
   }));
-  let shown = all.filter(p => rad == null || p.dist <= rad);
-  // Nothing inside the circle: fall back to the 3 nearest places
-  const fallback = !!spot && !shown.length && all.length > 0;
-  if (fallback) shown = [...all].sort((a, b) => a.dist - b.dist).slice(0, 3);
+  const shown = all;
+  drawZones(shown);                                  // geofence zones go under the markers
   shown.forEach(p => markers.set('p' + p.id, addPlaceMarker(p, p.score)));
 
   const list = prefs.length ? topK(shown, 8) : [...shown].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 8);
-  $('resHead').textContent = fallback ? `Nothing within ${fmtDist(rad)}. Nearest places:`
-    : spot ? (prefs.length ? 'Best matches near your spot' : 'Places near your spot (pick a mood to rank them)')
-    : (prefs.length ? 'Best matches' : 'Places (pick a mood to rank them)');
+  $('resHead').textContent = prefs.length ? 'Best matches' : 'Places (pick a mood to rank them)';
   $('results').innerHTML = list.map(p =>
     `<li data-k="p${p.id}" data-lat="${p.lat}" data-lng="${p.lng}">
      ${p.score == null ? '' : `<span class="score">${p.score}%</span>`}${esc(p.name)}
-     <span class="meta">${esc(p.category)} · ${LEVELS[p.social_level].label}${p.dist == null ? '' : ' · ' + fmtDist(p.dist) + (spot ? ' from spot' : ' away')}</span></li>`).join('')
+     <span class="meta">${esc(p.category)} · ${LEVELS[p.social_level].label}${p.dist == null ? '' : ' · ' + fmtDist(p.dist) + ' away'}${insideIds.has(p.id) ? ' · you are here' : ''}</span></li>`).join('')
     || '<li class="empty">No places match. Try resetting filters.</li>';
 
   const showEv = $('fEvents').checked;
-  const evs = showEv ? state.events.filter(e => (!state.levels.size || state.levels.has(e.social_level)) &&
-    (!spot || haversine(spot[0], spot[1], e.lat, e.lng) <= rad)) : [];
+  const evs = showEv ? state.events.filter(e => (!state.levels.size || state.levels.has(e.social_level))) : [];
   evs.forEach(e => markers.set('e' + e.id, addEventMarker(e)));
   $('evHead').hidden = $('events').hidden = !showEv;
   $('events').innerHTML = evs.map(e =>
@@ -86,7 +80,7 @@ function buildControls() {
   try {
     Object.assign(state, await loadAll());
     await loadReviews();
-    buildControls(); render(); initSocial(); initSpot();
+    buildControls(); render(); initSocial(); initGeofence();
   } catch (err) {
     console.error(err);
     $('status').textContent = 'Could not load data: ' + (err.message || JSON.stringify(err));
