@@ -49,22 +49,6 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .step h3{margin:0 0 4px;font-size:1.1rem}
 .step p{margin:0;color:var(--mut);font-size:.95rem}
 
-/* Geofence tutorial */
-.tut{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
-.tsteps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.tsteps li{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
-.tsteps .n{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#06141f;font-weight:700}
-.tsteps h3{margin:0 0 2px;font-size:1.05rem}
-.tsteps p{margin:0;color:var(--mut);font-size:.93rem}
-.tsteps kbd{display:inline-block;white-space:nowrap;margin-top:6px;font:inherit;font-size:.85rem;padding:2px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
-.demo{position:relative;aspect-ratio:1/1;border-radius:20px;border:1px solid var(--line);background:var(--panel);overflow:hidden}
-.demo svg.bgm{position:absolute;inset:0;width:100%;height:100%;color:var(--line)}
-.zone{position:absolute;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)}
-.zone.on{border-width:3px;background:color-mix(in srgb,var(--c) 38%,transparent)}
-.you{position:absolute;width:16px;height:16px;border-radius:50%;background:#4fa3f0;border:3px solid #fff;transform:translate(-50%,-50%);box-shadow:0 0 0 6px rgba(79,163,240,.25)}
-.demo .tag{position:absolute;left:50%;top:7%;transform:translateX(-50%);font-size:.8rem;font-weight:700;color:#06141f;background:var(--l3);border-radius:999px;padding:3px 12px;white-space:nowrap}
-.demo .zl{position:absolute;font-size:.72rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 7px;transform:translate(-50%,0);white-space:nowrap}
-
 /* Color boxes */
 .spec{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .lv{position:relative;padding:20px 18px 18px;border-radius:16px;
@@ -85,7 +69,7 @@ h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.025em;line-height:1.1;mar
 .final .lead{margin:0 auto 26px}
 footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-size:.88rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media(prefers-reduced-motion:no-preference){.pin::after{animation:p 2.6s ease-out infinite}@keyframes p{0%{transform:scale(.6);opacity:.6}100%{transform:scale(1.5);opacity:0}}}
-@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.tut{grid-template-columns:1fr}}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding:28px 0 56px}.spec{grid-template-columns:1fr 1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}}
 </style>
 </head>
 <body>
@@ -164,39 +148,9 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--mut);font-siz
     </div>
   </section>
 
-  <section id="geo">
-    <h2>Geofencing, shown in color</h2>
-    <p class="lead">Every place in Bacolod has a zone shaded in its interaction color. Turn on live geofencing and SocialMatch tells you which zone you are standing in.</p>
-    <div class="tut">
-      <ol class="tsteps">
-        <li><span class="n">1</span><div><h3>Open Explore</h3><p>On the map page, find <b>Geofence zones</b> and tap<br><kbd>📡 Start live geofencing</kbd></p></div></li>
-        <li><span class="n">2</span><div><h3>Allow your location</h3><p>Your browser asks once. Your position is only used on your device to check which zones you are in.</p></div></li>
-        <li><span class="n">3</span><div><h3>Walk into a zone</h3><p>The zone brightens and the panel shows its name and color. You also get a notice when you enter or leave.</p></div></li>
-        <li><span class="n">4</span><div><h3>Filter by color</h3><p>Use <b>Interaction colors</b> to show only the zones, places and events with the energy you want.</p></div></li>
-      </ol>
-      <div class="demo" role="img" aria-label="Map of Bacolod with four colored geofence zones and a blue dot standing inside the yellow casual social zone">
-        <svg class="bgm" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M-10 80 C90 50 160 140 260 100 S380 70 420 110"/>
-          <path d="M-10 270 C80 250 150 320 230 290 S360 250 420 300"/>
-          <path d="M110 -10 C130 80 90 160 140 240 S150 340 130 410"/>
-          <path d="M300 -10 C280 70 330 150 300 230 S320 340 340 410"/>
-        </svg>
-        <span class="zone" style="--c:var(--l1);left:20%;top:30%;width:26%"></span>
-        <span class="zone" style="--c:var(--l2);left:76%;top:28%;width:30%"></span>
-        <span class="zone on" style="--c:var(--l3);left:48%;top:58%;width:42%"></span>
-        <span class="zone" style="--c:var(--l4);left:80%;top:78%;width:24%"></span>
-        <span class="zl" style="left:20%;top:44%">Solo</span>
-        <span class="zl" style="left:76%;top:42%">Low</span>
-        <span class="zl" style="left:80%;top:90%">High</span>
-        <span class="you" style="left:46%;top:56%"></span>
-        <span class="tag">You are in a Casual social zone</span>
-      </div>
-    </div>
-  </section>
-
   <section>
     <h2>Read the map by color</h2>
-    <p class="lead">Every geofence zone and pin shows how much people interact at that place.</p>
+    <p class="lead">Every pin shows how much people interact at that place. Nearby pins of the same color group into numbered clusters.</p>
     <div class="spec">
       <div class="lv" style="--c:var(--l1)">
         <span class="dot"></span><h3>Solo</h3>

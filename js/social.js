@@ -87,7 +87,7 @@ function renderAbout() {
       <li><b>1</b><div>Pick one or more <em>moods</em> on the Explore tab.</div></li>
       <li><b>2</b><div>Every place gets a <em>match score</em> from 0 to 100%. Higher means a closer fit.</div></li>
       <li><b>3</b><div>Tap a result or a marker to see details, read reviews, or get directions.</div></li>
-      <li><b>4</b><div>Turn on <em>live geofencing</em> to see which colored zone you are standing in.</div></li>
+      <li><b>4</b><div>Filter by <em>interaction color</em> to see only the places with the energy you want.</div></li>
     </ol>
 
     <h2>How the score is calculated</h2>
@@ -100,7 +100,7 @@ function renderAbout() {
 
     <h2>Map colors</h2>
     <ul class="legend-list">${legend}</ul>
-    <p class="meta">Shaded circles are geofence zones, colored by interaction level. Bigger markers mean a better match. ★ markers are upcoming events.</p>
+    <p class="meta">Nearby places of the same color group into numbered clusters. Bigger markers mean a better match. ★ markers are upcoming events.</p>
 
     <h2>Credits</h2>
     <p class="meta">Map data © OpenStreetMap contributors · Leaflet · OSRM routing · Supabase. Friends and moods shown in the Friends tab are demo data.</p>`;

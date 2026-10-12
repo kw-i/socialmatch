@@ -3,7 +3,22 @@ const map = L.map('map').setView(BACOLOD_CENTER, 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
-const layer = L.markerClusterGroup({ maxClusterRadius: 45, showCoverageOnHover: false }).addTo(map);
+// One cluster group per interaction color, so only same-colored places merge together.
+const levelLayers = {};
+Object.entries(LEVELS).forEach(([k, v]) => {
+  levelLayers[k] = L.markerClusterGroup({
+    maxClusterRadius: 45, showCoverageOnHover: false,
+    iconCreateFunction: c => L.divIcon({
+      className: '', iconSize: [38, 38],
+      html: `<div class="clus" style="--c:${v.color}">${c.getChildCount()}</div>`
+    })
+  }).addTo(map);
+});
+// Small facade so the rest of the app can treat the groups as a single layer.
+const layer = {
+  clearLayers: () => Object.values(levelLayers).forEach(g => g.clearLayers()),
+  zoomToShowLayer: (m, cb) => (levelLayers[m.options.level] || Object.values(levelLayers)[0]).zoomToShowLayer(m, cb)
+};
 const reviewStats = {}; // place_id -> {n, avg}, filled by social.js
 
 function esc(s) {
@@ -17,20 +32,20 @@ function dirButton(lat, lng, name) {
 function addPlaceMarker(p, score) {
   const lv = LEVELS[p.social_level];
   const m = L.circleMarker([p.lat, p.lng], {
-    radius: 8 + (score ?? 50) / 20, color: '#fff', weight: 2, fillColor: lv.color, fillOpacity: .9
+    level: p.social_level, radius: 8 + (score ?? 50) / 20, color: '#fff', weight: 2, fillColor: lv.color, fillOpacity: .9
   }).bindPopup(`<b>${esc(p.name)}</b><br>${esc(p.category)} · ${lv.label}<br>
-    Noise ${p.noise_level}/5 · Crowd ${p.crowd_level}/5 · Zone ${zoneRadius(p)} m<br>
+    Noise ${p.noise_level}/5 · Crowd ${p.crowd_level}/5<br>
     ${score == null ? '' : `Match: <b>${score}%</b><br>`}${esc(p.description)}${ratingLine(p)}${dirButton(p.lat, p.lng, p.name)} <button class="dirbtn revbtn" data-pid="${p.id}">Reviews</button>`);
-  m.addTo(layer);
+  m.addTo(levelLayers[p.social_level]);
   return m;
 }
 
 function addEventMarker(ev) {
   const icon = L.divIcon({ className: '', html: '<div class="evmark">★</div>', iconSize: [22, 22] });
-  const m = L.marker([ev.lat, ev.lng], { icon }).bindPopup(
+  const m = L.marker([ev.lat, ev.lng], { icon, level: ev.social_level }).bindPopup(
     `<b>${esc(ev.title)}</b><br>${new Date(ev.event_date).toLocaleString()}<br>
      ${esc(ev.category)} · ${LEVELS[ev.social_level].label}<br>${esc(ev.description)}${dirButton(ev.lat, ev.lng, ev.title)}`);
-  m.addTo(layer);
+  m.addTo(levelLayers[ev.social_level]);
   return m;
 }
 

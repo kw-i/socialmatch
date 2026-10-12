@@ -11,7 +11,7 @@ function render(popups) {
   layer.clearLayers(); markers.clear();
   const prefs = state.moods.filter(m => state.moodIds.has(m.id))
     .map(m => ({ noise: m.pref_noise, crowd: m.pref_crowd, social: m.pref_social }));
-  const ref = refPos();                              // your location (null until tracking)
+  const ref = refPos();                              // your location (null until you ask for directions)
 
   const all = filterPlaces(state.places, { cats: state.cats, levels: state.levels }).map(p => ({
     ...p,
@@ -20,7 +20,6 @@ function render(popups) {
     dist: ref ? haversine(ref[0], ref[1], p.lat, p.lng) : null
   }));
   const shown = all;
-  drawZones(shown);                                  // geofence zones go under the markers
   shown.forEach(p => markers.set('p' + p.id, addPlaceMarker(p, p.score)));
 
   const list = prefs.length ? topK(shown, 8) : [...shown].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 8);
@@ -28,7 +27,7 @@ function render(popups) {
   $('results').innerHTML = list.map(p =>
     `<li data-k="p${p.id}" data-lat="${p.lat}" data-lng="${p.lng}">
      ${p.score == null ? '' : `<span class="score">${p.score}%</span>`}${esc(p.name)}
-     <span class="meta">${esc(p.category)} · ${LEVELS[p.social_level].label}${p.dist == null ? '' : ' · ' + fmtDist(p.dist) + ' away'}${insideIds.has(p.id) ? ' · you are here' : ''}</span></li>`).join('')
+     <span class="meta">${esc(p.category)} · ${LEVELS[p.social_level].label}${p.dist == null ? '' : ' · ' + fmtDist(p.dist) + ' away'}</span></li>`).join('')
     || '<li class="empty">No places match. Try resetting filters.</li>';
 
   const showEv = $('fEvents').checked;
@@ -80,7 +79,7 @@ function buildControls() {
   try {
     Object.assign(state, await loadAll());
     await loadReviews();
-    buildControls(); render(); initSocial(); initGeofence();
+    buildControls(); render(); initSocial();
   } catch (err) {
     console.error(err);
     $('status').textContent = 'Could not load data: ' + (err.message || JSON.stringify(err));

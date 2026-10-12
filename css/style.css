@@ -64,9 +64,6 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 .legend{display:flex;align-items:center;gap:8px;font-size:.85rem}
 .dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
 
-/* ---- Geofence zones ---- */
-#geoBox .meta{margin:0 0 6px}
-.dirbtn[aria-pressed=true]{background:#d6455d}
-#zoneInfo{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-left:6px solid var(--c,var(--line));border-radius:8px;font-size:.9rem}
-#zoneInfo .zonename{font-weight:700;font-size:1.05rem}
-.zonechip{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:-1px}
+/* ---- Same-color clusters ---- */
+.clus{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;
+  background:var(--c);border:3px solid #fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 35%,transparent),0 1px 4px rgba(0,0,0,.35)}

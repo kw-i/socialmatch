@@ -17,8 +17,7 @@ create table if not exists places (
   noise_level int not null check (noise_level between 1 and 5),
   crowd_level int not null check (crowd_level between 1 and 5),
   social_level int not null check (social_level between 1 and 4), -- 1 solo, 2 low, 3 casual, 4 high
-  description text,
-  geofence_m int not null default 150 -- radius of the place's geofence zone, in meters
+  description text
 );
 
 create table if not exists events (
@@ -41,22 +40,22 @@ create policy "public read moods" on moods for select using (true);
 create policy "public read places" on places for select using (true);
 create policy "public read events" on events for select using (true);
 
--- Seed data (Bacolod City, Negros Occidental. Coordinates and geofence radii are approximate; edit freely)
+-- Seed data (Bacolod City, Negros Occidental. Coordinates are approximate; edit freely)
 insert into moods (name, emoji, pref_noise, pref_crowd, pref_social) values
  ('Relaxed','🌿',1,1,1), ('Reflective','📖',2,1,1), ('Chill','☕',2,2,2),
  ('Friendly','🙂',3,3,3), ('Energetic','⚡',4,4,4), ('Party','🎉',5,5,4);
 
-insert into places (name, lat, lng, category, noise_level, crowd_level, social_level, description, geofence_m) values
- ('San Sebastian Cathedral', 10.6770, 122.9560, 'Landmark', 1, 2, 1, 'Quiet cathedral beside the plaza, good for a calm moment.', 80),
- ('Capitol Park and Lagoon', 10.6638, 122.9500, 'Park', 2, 2, 2, 'Lagoon walks and benches around the Provincial Capitol.', 200),
- ('Negros Museum', 10.6648, 122.9525, 'Landmark', 1, 2, 1, 'Heritage museum for slow, quiet browsing.', 100),
- ('Bacolod Public Plaza', 10.6765, 122.9565, 'Park', 2, 3, 3, 'Open plaza with benches, vendors and evening strollers.', 150),
- ('The Ruins (Talisay)', 10.7345, 122.9620, 'Landmark', 2, 3, 2, 'Famous mansion ruins with wide grounds and a café.', 250),
- ('Robinsons Place Bacolod', 10.6893, 122.9600, 'Mall', 3, 4, 3, 'Mall with cafés, shops and open seating.', 200),
- ('SM City Bacolod', 10.6935, 122.9480, 'Mall', 3, 4, 3, 'Large mall in the North Reclamation Area.', 250),
- ('Manokan Country', 10.6800, 122.9420, 'Food market', 4, 4, 4, 'Row of chicken inasal grills with shared tables by the bay.', 150),
- ('Lacson Street Eat Street', 10.6800, 122.9570, 'Nightlife', 5, 5, 4, 'Bars, grills and live music, busiest on weekends.', 200),
- ('Libertad Public Market', 10.6615, 122.9460, 'Market', 4, 5, 3, 'Busy public market for a local feel.', 150);
+insert into places (name, lat, lng, category, noise_level, crowd_level, social_level, description) values
+ ('San Sebastian Cathedral', 10.6770, 122.9560, 'Landmark', 1, 2, 1, 'Quiet cathedral beside the plaza, good for a calm moment.'),
+ ('Capitol Park and Lagoon', 10.6638, 122.9500, 'Park', 2, 2, 2, 'Lagoon walks and benches around the Provincial Capitol.'),
+ ('Negros Museum', 10.6648, 122.9525, 'Landmark', 1, 2, 1, 'Heritage museum for slow, quiet browsing.'),
+ ('Bacolod Public Plaza', 10.6765, 122.9565, 'Park', 2, 3, 3, 'Open plaza with benches, vendors and evening strollers.'),
+ ('The Ruins (Talisay)', 10.7345, 122.9620, 'Landmark', 2, 3, 2, 'Famous mansion ruins with wide grounds and a café.'),
+ ('Robinsons Place Bacolod', 10.6893, 122.9600, 'Mall', 3, 4, 3, 'Mall with cafés, shops and open seating.'),
+ ('SM City Bacolod', 10.6935, 122.9480, 'Mall', 3, 4, 3, 'Large mall in the North Reclamation Area.'),
+ ('Manokan Country', 10.6800, 122.9420, 'Food market', 4, 4, 4, 'Row of chicken inasal grills with shared tables by the bay.'),
+ ('Lacson Street Eat Street', 10.6800, 122.9570, 'Nightlife', 5, 5, 4, 'Bars, grills and live music, busiest on weekends.'),
+ ('Libertad Public Market', 10.6615, 122.9460, 'Market', 4, 5, 3, 'Busy public market for a local feel.');
 
 insert into events (title, lat, lng, event_date, category, social_level, place_id, description) values
  ('Sunday Sketch Walk', 10.6638, 122.9500, now() + interval '2 days', 'Art', 2, 2, 'Casual group sketching around the lagoon, all levels.'),
