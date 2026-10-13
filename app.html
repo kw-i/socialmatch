@@ -4,80 +4,162 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SocialMatch</title>
+
+<!-- External libraries (see README.md > Credits) -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-<link rel="stylesheet" href="css/style.css?v=6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Our styles -->
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/social-panel.css">
 </head>
 <body>
+
+<!-- LEFT PANEL: explore the map -->
 <aside id="panel">
-  <h1><a href="index.html" style="color:inherit;text-decoration:none">SocialMatch</a></h1>
+  <h1><a href="index.html">SocialMatch</a></h1>
   <p class="sub">Pick your moods, then narrow the map by color and activity.</p>
 
   <nav id="tabs">
-    <button data-t="explore" aria-pressed="true">Explore</button>
-    <button data-t="friends" aria-pressed="false">Friends</button>
-    <button data-t="profile" aria-pressed="false">Profile</button>
-    <button data-t="about" aria-pressed="false">About</button>
+    <button data-tab="explore" aria-pressed="true">Explore</button>
+    <button data-tab="about" aria-pressed="false">About</button>
   </nav>
+
   <div id="tab-explore">
-  <section>
-    <h2>Your moods <small>(pick any)</small></h2>
-    <div id="moods" class="chips"></div>
-  </section>
+    <section>
+      <h2>Search places</h2>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Try “plaza”, “ruins” or “market”" autocomplete="off">
+        <ul id="searchResults" hidden></ul>
+      </div>
+    </section>
 
-  <section>
-    <h2>Interaction colors <small>(none selected = all)</small></h2>
-    <div id="levels" class="levels"></div>
-  </section>
+    <section>
+      <h2>Your moods <small>(pick any)</small></h2>
+      <div id="moodButtons" class="chips"></div>
+    </section>
 
-  <section>
-    <h2>Activity types <small>(none selected = all)</small></h2>
-    <div id="cats" class="chips"></div>
-    <label class="check"><input id="fEvents" type="checkbox" checked> Show events</label>
-    <button id="reset" class="link">Reset filters</button>
-  </section>
+    <section>
+      <h2>Interaction colors <small>(none selected = all)</small></h2>
+      <div id="levelButtons" class="levels"></div>
+    </section>
 
-  <section id="route" hidden>
-    <h2>Directions to <span id="rName"></span></h2>
-    <p id="rSum"></p>
-    <a id="rGoogle" target="_blank" rel="noopener">Open in Google Maps</a>
-    <button id="rClear" class="link">Clear route</button>
-    <ol id="rSteps"></ol>
-  </section>
+    <section>
+      <h2>Activity types <small>(none selected = all)</small></h2>
+      <div id="categoryButtons" class="chips"></div>
+      <label class="check"><input id="showEvents" type="checkbox" checked> Show events</label>
+      <button id="resetFilters" class="link">Reset filters</button>
+    </section>
 
-  <section>
-    <h2 id="resHead">Places</h2>
-    <ol id="results"></ol>
-    <h2 id="evHead">Upcoming events</h2>
-    <ul id="events"></ul>
-  </section>
+    <section>
+      <h2>Sort &amp; location</h2>
+      <div class="row">
+        <select id="sortMode" aria-label="Sort places by">
+          <option value="match">Best match</option>
+          <option value="nearest">Nearest</option>
+          <option value="name">A to Z</option>
+        </select>
+        <button id="locateBtn" class="action-btn">📍 My location</button>
+      </div>
+    </section>
+
+    <section id="routeBox" hidden>
+      <h2>Directions to <span id="routeName"></span></h2>
+      <p id="routeSummary"></p>
+      <a id="routeGoogleLink" target="_blank" rel="noopener">Open in Google Maps</a>
+      <button id="routeClear" class="link">Clear route</button>
+      <ol id="routeSteps"></ol>
+    </section>
+
+    <section id="historyBox" hidden>
+      <h2>Recently viewed <button id="historyBack" class="link">← Back</button></h2>
+      <ul id="historyList"></ul>
+    </section>
+
+    <section>
+      <h2 id="placesHeading">Places</h2>
+      <ol id="placeList"></ol>
+      <h2 id="eventsHeading">Upcoming events</h2>
+      <ul id="eventList"></ul>
+    </section>
   </div>
-  <div id="tab-friends" hidden></div>
-  <div id="tab-profile" hidden></div>
+
   <div id="tab-about" hidden></div>
-  <p id="status" role="status"></p>
 </aside>
+
+<!-- MAP -->
 <div id="map"></div>
-<dialog id="revDlg">
-  <h2 id="revTitle"></h2><p id="revAvg"></p><ul id="revList"></ul>
-  <label>Your rating <select id="revRating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></label>
-  <textarea id="revText" rows="3" maxlength="280" placeholder="Share your experience (stays inside SocialMatch)"></textarea>
-  <button id="revPost" class="dirbtn">Post review</button> <button id="revClose" class="link">Close</button>
+
+<!-- RIGHT PANEL: friends and profile (full-screen sheet on phones) -->
+<aside id="side">
+  <header class="side-head">
+    <div class="side-title">
+      <h2>Community</h2>
+      <button id="sideClose" class="side-close" aria-label="Back to the map">✕</button>
+    </div>
+    <div id="sideTabs" class="seg">
+      <button data-side-tab="friends" aria-pressed="true">👥 Friends</button>
+      <button data-side-tab="profile" aria-pressed="false">🙂 Profile</button>
+    </div>
+  </header>
+  <div class="side-body">
+    <div id="friendsView"></div>
+    <div id="profileView" hidden></div>
+  </div>
+</aside>
+
+<!-- Bottom navigation (phones only) -->
+<nav id="dock" aria-label="Main navigation">
+  <button data-dock="explore" aria-pressed="true"><span>🗺️</span>Explore</button>
+  <button data-dock="friends" aria-pressed="false"><span>👥</span>Friends</button>
+  <button data-dock="profile" aria-pressed="false"><span>🙂</span>Profile</button>
+</nav>
+
+<!-- Reviews dialog -->
+<dialog id="reviewDialog">
+  <h2 id="reviewTitle"></h2>
+  <p id="reviewAverage"></p>
+  <ul id="reviewList"></ul>
+  <label>Your rating
+    <select id="reviewRating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
+  </label>
+  <textarea id="reviewText" rows="3" maxlength="280" placeholder="Share your experience (stays inside SocialMatch)"></textarea>
+  <button id="reviewPost" class="action-btn">Post review</button>
+  <button id="reviewClose" class="link">Close</button>
 </dialog>
 
+<p id="status" role="status"></p>
+
+<!-- Libraries -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js?v=6"></script>
-<script src="js/algorithms.js?v=6"></script>
-<script src="js/db.js?v=6"></script>
-<script src="js/map.js?v=6"></script>
-<script src="js/directions.js?v=6"></script>
-<script src="js/dummy.js?v=6"></script>
-<script src="js/social.js?v=6"></script>
-<script src="js/app.js?v=6"></script>
+
+<!-- Our code. Order matters: each file may use the ones above it. -->
+<script src="js/config/constants.js"></script>
+<script src="js/config/supabase-config.js"></script>
+<script src="js/data-structures/min-heap.js"></script>
+<script src="js/data-structures/trie.js"></script>
+<script src="js/data-structures/stack.js"></script>
+<script src="js/algorithms/distance.js"></script>
+<script src="js/algorithms/scoring.js"></script>
+<script src="js/algorithms/top-k.js"></script>
+<script src="js/algorithms/merge-sort.js"></script>
+<script src="js/algorithms/filters.js"></script>
+<script src="js/services/database.js"></script>
+<script src="js/ui/helpers.js"></script>
+<script src="js/map/map.js"></script>
+<script src="js/map/markers.js"></script>
+<script src="js/map/directions.js"></script>
+<script src="js/ui/explore.js"></script>
+<script src="js/ui/search.js"></script>
+<script src="js/ui/history.js"></script>
+<script src="js/ui/reviews.js"></script>
+<script src="js/ui/about.js"></script>
+<script src="js/ui/social-panel.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

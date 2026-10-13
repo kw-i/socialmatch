@@ -1,0 +1,121 @@
+/* ===== Right-hand panel: Friends and Profile =====
+   A warmer, card-based look so it feels different from the left panel.
+   Desktop: sidebar on the right. Phone: full-screen sheet above the bottom bar. */
+
+:root {
+  --side-bg: #f6efe6;  --side-card: #ffffff;  --side-ink: #2b2118;  --side-muted: #7a6a5a;
+  --side-line: #e4d8c8;  --side-accent: #c2542d;  --side-accent-ink: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --side-bg: #201a15;  --side-card: #2b231c;  --side-ink: #f3e9dc;  --side-muted: #b4a290;
+    --side-line: #3d3228;  --side-accent: #e0794f;  --side-accent-ink: #1a120b;
+  }
+}
+
+#side {
+  width: 320px; flex: none; display: flex; flex-direction: column;
+  background: var(--side-bg); color: var(--side-ink); border-left: 1px solid var(--side-line);
+}
+#side .meta { color: var(--side-muted); }
+
+/* Header with its own segmented tabs */
+.side-head {
+  padding: 18px 18px 14px; color: var(--side-accent-ink);
+  background: linear-gradient(135deg, var(--side-accent), color-mix(in srgb, var(--side-accent) 55%, #3a1d10));
+}
+.side-title { display: flex; justify-content: space-between; align-items: center; }
+.side-head h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.01em; }
+.side-close { display: none; font: inherit; color: inherit; background: rgba(255,255,255,.18); border: 0; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+.seg { display: flex; gap: 4px; margin-top: 12px; padding: 4px; border-radius: 999px; background: rgba(0,0,0,.22); }
+.seg button {
+  flex: 1; font: inherit; font-size: .88rem; color: inherit; background: none; border: 0;
+  padding: 7px 8px; border-radius: 999px; cursor: pointer;
+}
+.seg button[aria-pressed=true] { background: var(--side-card); color: var(--side-ink); }
+
+.side-body { flex: 1; overflow-y: auto; padding: 16px; }
+.side-intro { margin: 0 0 10px; color: var(--side-muted); font-size: .88rem; }
+
+.switch { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-size: .9rem; }
+.switch input { accent-color: var(--side-accent); width: 18px; height: 18px; }
+
+/* Friend cards */
+.friend-list { display: grid; gap: 12px; margin-top: 12px; }
+.friend-card {
+  display: flex; gap: 12px; padding: 14px; background: var(--side-card);
+  border: 1px solid var(--side-line); border-radius: 16px; box-shadow: 0 2px 8px rgba(60,35,15,.08);
+}
+.avatar.big { width: 46px; height: 46px; font-size: 1rem; }
+.avatar.huge { width: 84px; height: 84px; font-size: 1.8rem; border: 4px solid var(--side-card); box-shadow: 0 2px 10px rgba(60,35,15,.2); }
+.friend-body { flex: 1; min-width: 0; }
+.friend-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.friend-status { margin: 6px 0 8px; font-style: italic; font-size: .92rem; }
+.mood-pill {
+  display: inline-block; font-size: .75rem; padding: 2px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--side-accent) 16%, transparent); color: var(--side-accent); white-space: nowrap;
+}
+.place-chip {
+  font: inherit; font-size: .82rem; cursor: pointer; padding: 4px 12px; border-radius: 999px;
+  color: var(--side-ink); background: color-mix(in srgb, var(--color) 18%, transparent);
+  border: 1px solid var(--color);
+}
+.place-chip:hover { background: color-mix(in srgb, var(--color) 32%, transparent); }
+
+/* Profile */
+.profile-hero {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
+  padding: 20px 16px 16px; margin-bottom: 14px; background: var(--side-card);
+  border: 1px solid var(--side-line); border-radius: 20px;
+}
+.profile-hero h3 { margin: 8px 0 0; font-size: 1.2rem; }
+.profile-hero p { margin: 8px 0 0; color: var(--side-muted); font-size: .9rem; }
+
+.field { display: block; margin: 10px 0; font-size: .82rem; color: var(--side-muted); }
+.field input, .field textarea, .field select {
+  display: block; width: 100%; margin-top: 4px; font: inherit; font-size: .95rem; padding: 9px 12px;
+  color: var(--side-ink); background: var(--side-card); border: 1px solid var(--side-line); border-radius: 12px;
+}
+#side h4 { margin: 16px 0 8px; font-size: .9rem; }
+#side .chips button {
+  color: var(--side-ink); border-color: var(--side-line); background: var(--side-card);
+}
+#side .chips button[aria-pressed=true] { background: var(--side-accent); border-color: var(--side-accent); color: var(--side-accent-ink); }
+#side button:focus-visible, #side input:focus-visible, #side textarea:focus-visible, #side select:focus-visible {
+  outline: 2px solid var(--side-accent); outline-offset: 2px;
+}
+
+.profile-actions { display: flex; gap: 8px; margin-top: 16px; }
+.primary-btn, .ghost-btn { flex: 1; font: inherit; font-weight: 600; padding: 11px; border-radius: 12px; cursor: pointer; }
+.primary-btn { border: 0; background: var(--side-accent); color: var(--side-accent-ink); }
+.ghost-btn { background: none; color: var(--side-accent); border: 1.5px solid var(--side-accent); }
+
+/* Bottom navigation: only visible on phones */
+#dock { display: none; }
+
+@media (max-width: 1100px) and (min-width: 761px) {
+  #panel { width: 300px; }
+  #side { width: 280px; }
+}
+
+/* ----- Phones: right panel becomes a full-screen sheet ----- */
+@media (max-width: 760px) {
+  #side {
+    position: fixed; inset: 0 0 60px 0; width: auto; z-index: 1100; border-left: 0;
+    transform: translateY(100%); visibility: hidden; transition: transform .25s ease, visibility .25s;
+  }
+  body.side-open #side { transform: none; visibility: visible; }
+  .side-close { display: block; }
+
+  #dock {
+    display: flex; order: 3; flex: none; height: 60px; z-index: 1200; position: relative;
+    background: var(--bg); border-top: 1px solid var(--line);
+  }
+  #dock button {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    font: inherit; font-size: .75rem; color: var(--muted); background: none; border: 0; cursor: pointer;
+  }
+  #dock button span { font-size: 1.25rem; line-height: 1; }
+  #dock button[aria-pressed=true] { background: none; color: var(--accent); font-weight: 700; }
+}
+@media (prefers-reduced-motion: reduce) { #side { transition: none; } }
